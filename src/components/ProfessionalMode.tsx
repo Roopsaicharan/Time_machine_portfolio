@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { education, experience, links, projects, publications, skills, traveler } from '../data/content'
+import { education, experience, links, projects, publications, skills, traveler, type ProjectData } from '../data/content'
 import { ProjectMiniDemo } from '../game/ProjectMiniDemo'
 
 interface ProfessionalModeProps {
@@ -8,31 +8,36 @@ interface ProfessionalModeProps {
 }
 
 export function ProfessionalMode({ onSwitchTo3D, onOpenResume }: ProfessionalModeProps) {
-  const [activeProjectTab, setActiveProjectTab] = useState<string>('meetmint')
+  const [activeCategory, setActiveCategory] = useState<string>('ALL')
+  const [activeProjectId, setActiveProjectId] = useState<string>('tracer')
 
-  const currentProject = projects.find((p) => p.id === activeProjectTab) || projects[0]
+  const filteredProjects = activeCategory === 'ALL'
+    ? projects
+    : projects.filter((p) => p.category.toUpperCase().includes(activeCategory))
+
+  const currentProject: ProjectData = projects.find((p) => p.id === activeProjectId) || projects[0]
 
   return (
     <div className="professional-mode-container">
-      {/* Top Banner / Switch to 3D Game */}
+      {/* Top Professional Header */}
       <header className="prof-header">
         <div className="prof-branding">
           <span className="prof-name">{traveler.name}</span>
-          <span className="prof-callsign">CHRONOS // UF GATOR CS</span>
+          <span className="prof-callsign">UF GATOR CS // SOFTWARE & AI SYSTEMS</span>
         </div>
 
         <nav className="prof-nav">
           <a href="#about">About</a>
           <a href="#skills">Skills</a>
-          <a href="#projects">Projects & Demos</a>
+          <a href="#projects">Projects & Sandboxes</a>
           <a href="#experience">Experience</a>
-          <a href="#publications">Publications</a>
+          <a href="#publications">Research</a>
           <a href="#contact">Contact</a>
           <button type="button" className="prof-resume-btn" onClick={onOpenResume}>
-            📄 Resume
+            📄 Verified Resume
           </button>
           <button type="button" className="prof-switch-btn" onClick={onSwitchTo3D}>
-            🏎️ Explorer 3D Time Machine
+            🚀 3D Doraemon Time Machine
           </button>
         </nav>
       </header>
@@ -40,32 +45,51 @@ export function ProfessionalMode({ onSwitchTo3D, onOpenResume }: ProfessionalMod
       {/* Hero Section */}
       <section id="about" className="prof-hero-section">
         <div className="prof-hero-copy">
-          <p className="eyebrow" style={{ color: 'var(--cyan)' }}>FRONT-END UI & AI SYSTEMS ENGINEER</p>
-          <h1>Building reliable software, intelligent agents & interactive experiences.</h1>
+          <p className="eyebrow" style={{ color: 'var(--cyan)' }}>
+            SOFTWARE ENGINEER • AI/ML RESEARCHER • FULL-STACK DEVELOPER
+          </p>
+          <h1>Building reliable software, intelligent AI systems, and high-throughput pipelines.</h1>
           <p className="prof-hero-lead">{traveler.bio}</p>
+
           <div className="prof-meta-tags">
-            <span className="prof-meta-chip">🎓 <strong>MS in Computer Science</strong> — University of Florida (2025–2027)</span>
+            <span className="prof-meta-chip">
+              🎓 <strong>Master&apos;s in Computer Science</strong> — University of Florida (Graduating <strong>May 2027</strong>)
+            </span>
             <span className="prof-meta-chip">📍 Gainesville, FL & India</span>
-            <span className="prof-meta-chip">💼 Seeking SE / AI / Front-End Roles (2026/2027)</span>
+            <span className="prof-meta-chip">
+              💼 <strong>Seeking 2027 New-Grad Software Engineering & AI/ML Roles</strong>
+            </span>
           </div>
+
           <div className="prof-hero-actions">
             <button type="button" className="engage" onClick={onOpenResume}>
-              View Verified Resume 📄
+              Download Verified Resume 📄
             </button>
             <a href={`mailto:${links.email}`} className="action-btn">
-              Contact Directly ✉️
+              Direct Contact ✉️
             </a>
-            <button type="button" className="action-btn" onClick={onSwitchTo3D} style={{ borderColor: 'var(--cyan)', color: 'var(--cyan)' }}>
-              Launch 3D Doraemon Time Machine 🏎️
+            <a href={links.github} target="_blank" rel="noreferrer" className="action-btn">
+              GitHub Profile ↗
+            </a>
+            <a href={links.linkedin} target="_blank" rel="noreferrer" className="action-btn">
+              LinkedIn ↗
+            </a>
+            <button
+              type="button"
+              className="action-btn"
+              onClick={onSwitchTo3D}
+              style={{ borderColor: 'var(--cyan)', color: 'var(--cyan)' }}
+            >
+              Launch 3D Explorer Mode 🏎️
             </button>
           </div>
         </div>
       </section>
 
-      {/* Technical Skills Matrix */}
+      {/* Skills Matrix */}
       <section id="skills" className="prof-section">
         <div className="section-title-wrap">
-          <p className="eyebrow">COMPETENCIES</p>
+          <p className="eyebrow">CORE COMPETENCIES</p>
           <h2>Technical Skills & Engineering Stack</h2>
         </div>
         <div className="prof-skills-grid">
@@ -82,21 +106,45 @@ export function ProfessionalMode({ onSwitchTo3D, onOpenResume }: ProfessionalMod
         </div>
       </section>
 
-      {/* Filterable Projects & Live Interactive Sandboxes */}
+      {/* Featured Projects with Interactive Case Studies */}
       <section id="projects" className="prof-section">
         <div className="section-title-wrap">
-          <p className="eyebrow">ENGINEERING PORTFOLIO</p>
+          <p className="eyebrow">ENGINEERING SHOWCASE</p>
           <h2>Featured Systems & Interactive Case Studies</h2>
+        </div>
+
+        {/* Category Filters */}
+        <div className="prof-category-filters" style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
+          {['ALL', 'AI & SYSTEMS', 'RESEARCH & DATA', 'FULL-STACK'].map((cat) => (
+            <button
+              key={cat}
+              type="button"
+              className={`filter-btn ${activeCategory === cat ? 'active' : ''}`}
+              onClick={() => setActiveCategory(cat)}
+              style={{
+                padding: '0.4rem 0.9rem',
+                borderRadius: '6px',
+                fontSize: '0.8rem',
+                background: activeCategory === cat ? 'var(--cyan)' : 'rgba(255,255,255,0.06)',
+                color: activeCategory === cat ? '#04111d' : '#e2e8f0',
+                border: '1px solid ' + (activeCategory === cat ? 'var(--cyan)' : 'rgba(255,255,255,0.1)'),
+                fontWeight: activeCategory === cat ? 700 : 500,
+                cursor: 'pointer',
+              }}
+            >
+              {cat}
+            </button>
+          ))}
         </div>
 
         {/* Project Selector Tabs */}
         <div className="prof-project-tabs">
-          {projects.map((proj) => (
+          {filteredProjects.map((proj) => (
             <button
               key={proj.id}
               type="button"
-              className={`prof-tab-btn ${activeProjectTab === proj.id ? 'active' : ''}`}
-              onClick={() => setActiveProjectTab(proj.id)}
+              className={`prof-tab-btn ${activeProjectId === proj.id ? 'active' : ''}`}
+              onClick={() => setActiveProjectId(proj.id)}
             >
               <span>{proj.codename}</span>
               <small>{proj.year}</small>
@@ -109,21 +157,52 @@ export function ProfessionalMode({ onSwitchTo3D, onOpenResume }: ProfessionalMod
           <div className="case-study-header">
             <div>
               <span className="eyebrow" style={{ color: currentProject.accent || 'var(--cyan)' }}>
-                {currentProject.codename} // REAL DATE: {currentProject.year}
+                {currentProject.codename} // REAL DATE: {currentProject.year} // {currentProject.category}
               </span>
               <h3>{currentProject.title}</h3>
             </div>
-            {currentProject.href && (
-              <a href={currentProject.href} target="_blank" rel="noreferrer" className="engage">
-                GitHub Repository ↗
-              </a>
-            )}
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+              {currentProject.href && (
+                <a href={currentProject.href} target="_blank" rel="noreferrer" className="engage">
+                  GitHub Repository ↗
+                </a>
+              )}
+              {currentProject.paperUrl && (
+                <a
+                  href={currentProject.paperUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="engage"
+                  style={{ background: 'rgba(255, 154, 76, 0.15)', borderColor: '#ff9a4c', color: '#ff9a4c' }}
+                >
+                  IEEE Paper ↗
+                </a>
+              )}
+            </div>
           </div>
 
           <div className="case-study-grid">
             <div className="case-study-text">
-              <h4>System Architecture & Impact</h4>
+              <h4>System Architecture & Engineering Impact</h4>
               <p>{currentProject.summary}</p>
+
+              <div style={{ margin: '0.8rem 0', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <div style={{ background: 'rgba(255,255,255,0.03)', padding: '0.6rem', borderRadius: '4px' }}>
+                  <strong style={{ color: '#5ef2ff', fontSize: '0.78rem', display: 'block' }}>ENGINEERING PROBLEM:</strong>
+                  <p style={{ margin: '0.2rem 0', fontSize: '0.85rem' }}>{currentProject.problem}</p>
+                </div>
+
+                <div style={{ background: 'rgba(255,255,255,0.03)', padding: '0.6rem', borderRadius: '4px' }}>
+                  <strong style={{ color: '#ffd18a', fontSize: '0.78rem', display: 'block' }}>MY ROLE & ARCHITECTURE:</strong>
+                  <p style={{ margin: '0.2rem 0', fontSize: '0.85rem' }}>{currentProject.role} — {currentProject.architecture}</p>
+                </div>
+
+                <div style={{ background: 'rgba(46, 213, 115, 0.08)', padding: '0.6rem', borderRadius: '4px', borderLeft: '3px solid #2ed573' }}>
+                  <strong style={{ color: '#2ed573', fontSize: '0.78rem', display: 'block' }}>VERIFIED RESULTS & IMPACT:</strong>
+                  <p style={{ margin: '0.2rem 0', fontSize: '0.85rem', color: '#e2e8f0' }}>{currentProject.impact}</p>
+                </div>
+              </div>
+
               <div className="chips" style={{ marginTop: '0.8rem' }}>
                 {currentProject.tags.map((t) => (
                   <span key={t} className="chip">{t}</span>
@@ -141,14 +220,14 @@ export function ProfessionalMode({ onSwitchTo3D, onOpenResume }: ProfessionalMod
       {/* Experience & Education */}
       <section id="experience" className="prof-section">
         <div className="section-title-wrap">
-          <p className="eyebrow">WORK HISTORY & ACADEMICS</p>
-          <h2>Internships & Education</h2>
+          <p className="eyebrow">CAREER TRAJECTORY & ACADEMICS</p>
+          <h2>Experience & Education</h2>
         </div>
 
         <div className="prof-two-col">
-          {/* Internships */}
+          {/* Work & Research Experience */}
           <div>
-            <h3 className="column-subtitle">Internships</h3>
+            <h3 className="column-subtitle">Experience & Research Appointments</h3>
             {experience.map((exp) => (
               <div key={exp.mission} className="prof-card">
                 <span className="eyebrow">{exp.years}</span>
@@ -159,14 +238,14 @@ export function ProfessionalMode({ onSwitchTo3D, onOpenResume }: ProfessionalMod
             ))}
           </div>
 
-          {/* Education */}
+          {/* Academic Credentials */}
           <div>
             <h3 className="column-subtitle">Academic Credentials</h3>
             {education.map((edu) => (
               <div key={edu.place} className="prof-card">
                 <span className="eyebrow">{edu.years}</span>
                 <h4>{edu.place}</h4>
-                <p className="role">{edu.program}</p>
+                <p className="role">{edu.program} ({edu.gpa})</p>
                 <p>{edu.notes}</p>
               </div>
             ))}
@@ -177,7 +256,7 @@ export function ProfessionalMode({ onSwitchTo3D, onOpenResume }: ProfessionalMod
       {/* Peer-Reviewed IEEE Publications */}
       <section id="publications" className="prof-section">
         <div className="section-title-wrap">
-          <p className="eyebrow">SCHOLARSHIP</p>
+          <p className="eyebrow">SCHOLARSHIP & INTELLECTUAL PROPERTY</p>
           <h2>Peer-Reviewed IEEE Publications & Patents</h2>
         </div>
 
@@ -186,11 +265,13 @@ export function ProfessionalMode({ onSwitchTo3D, onOpenResume }: ProfessionalMod
             <div key={pub.id} className="prof-card">
               <span className="eyebrow">{pub.conference}</span>
               <h4>{pub.title}</h4>
-              <p className="year-line">DOI: <a href={pub.url} target="_blank" rel="noreferrer">{pub.doi}</a></p>
+              <p className="year-line">Reference: <a href={pub.url} target="_blank" rel="noreferrer">{pub.doi}</a></p>
               <p>{pub.summary}</p>
-              <a href={pub.url} target="_blank" rel="noreferrer" className="engage" style={{ display: 'inline-block', marginTop: '0.6rem' }}>
-                Access Paper On IEEE Xplore ↗
-              </a>
+              {pub.url.startsWith('http') && (
+                <a href={pub.url} target="_blank" rel="noreferrer" className="engage" style={{ display: 'inline-block', marginTop: '0.6rem' }}>
+                  Access Paper on IEEE Xplore ↗
+                </a>
+              )}
             </div>
           ))}
         </div>
@@ -202,13 +283,21 @@ export function ProfessionalMode({ onSwitchTo3D, onOpenResume }: ProfessionalMod
           <p className="eyebrow">CONNECT</p>
           <h2>Open a Channel with Roop Sai Charan</h2>
         </div>
-        <p>Available for Software Engineering, Front-End, and AI Systems positions (2026/2027).</p>
+        <p style={{ maxWidth: '640px', margin: '0.5rem auto 1.5rem', color: '#94a3b8' }}>
+          Available for Software Engineering, Front-End, and AI/ML positions (Graduating <strong>May 2027</strong>).
+        </p>
         <div className="channels" style={{ justifyContent: 'center' }}>
-          <a href={`mailto:${links.email}`} className="engage">Email: {links.email}</a>
-          <a href={links.github} target="_blank" rel="noreferrer" className="engage">GitHub: Roopsaicharan</a>
-          <a href={links.linkedin} target="_blank" rel="noreferrer" className="engage">LinkedIn Profile</a>
+          <a href={`mailto:${links.email}`} className="engage">
+            Email: {links.email}
+          </a>
+          <a href={links.github} target="_blank" rel="noreferrer" className="engage">
+            GitHub: Roopsaicharan
+          </a>
+          <a href={links.linkedin} target="_blank" rel="noreferrer" className="engage">
+            LinkedIn Profile
+          </a>
           <button type="button" className="engage" onClick={onOpenResume}>
-            Download / View Full Resume
+            Download Full Resume 📄
           </button>
         </div>
       </section>

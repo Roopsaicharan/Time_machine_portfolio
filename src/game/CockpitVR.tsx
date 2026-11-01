@@ -1,31 +1,33 @@
 import { useState } from 'react'
-import { eras, traveler, type EraId } from '../data/content'
+import { eras, traveler, links, type EraId } from '../data/content'
 import { sounds } from './SoundEngine'
 
 interface CockpitVRProps {
   onInitiateWarp: (targetEra: EraId) => void
   onOpenResume: () => void
+  onSwitchToProfessional?: () => void
 }
 
-export function CockpitVR({ onInitiateWarp, onOpenResume }: CockpitVRProps) {
+export function CockpitVR({ onInitiateWarp, onOpenResume, onSwitchToProfessional }: CockpitVRProps) {
   const [hasGreeted, setHasGreeted] = useState<boolean>(() => {
     return sessionStorage.getItem('chronos-greeted') === '1'
   })
 
-  // Selected era index to browse through ALL eras on the cockpit screen!
+  // Selected era index on the cockpit screen
   const [eraIndex, setEraIndex] = useState<number>(4) // default to 1985 / neon
   const selectedEra = eras[eraIndex] || eras[0]
 
+  // Instrument console switches
   const [switches, setSwitches] = useState({
-    flux: true,
+    lamp: true,
     shields: true,
-    stabilizers: true,
-    hyperdrive: true,
+    hover: true,
+    cores: true,
   })
 
-  const [leverPosition, setLeverPosition] = useState<'idle' | 'pulled'>('idle')
+  const [leverPosition, setLeverPosition] = useState<'idle' | 'pulling' | 'pulled'>('idle')
 
-  const handleStartGreeting = () => {
+  const handleStartExplorer = () => {
     sounds.initContext()
     sounds.playGreetingChime()
     sessionStorage.setItem('chronos-greeted', '1')
@@ -53,22 +55,29 @@ export function CockpitVR({ onInitiateWarp, onOpenResume }: CockpitVRProps) {
   }
 
   const handlePullLever = () => {
+    if (leverPosition !== 'idle') return
     sounds.playLeverClunk()
-    setLeverPosition('pulled')
-    sounds.playWarp()
+    setLeverPosition('pulling')
+    setTimeout(() => {
+      setLeverPosition('pulled')
+      sounds.playWarp()
+    }, 200)
 
     window.setTimeout(() => {
       onInitiateWarp(selectedEra.id)
-    }, 600)
+      setLeverPosition('idle')
+    }, 650)
   }
 
-  // Phase 1: Holographic Greeting from Roop
+  // ==========================================
+  // PHASE 1: PREMIUM CINEMATIC SCI-FI LANDING PAGE
+  // ==========================================
   if (!hasGreeted) {
     return (
-      <div className="vr-greeting-container">
+      <div className="vr-greeting-container cinematic-welcome-portal">
         <div className="hologram-avatar-wrap">
           <div className="hologram-scanline" />
-          <div className="hologram-circle">
+          <div className="temporal-portal-ring">
             <span className="holo-icon">⏳</span>
           </div>
           <div className="hologram-waves">
@@ -80,41 +89,102 @@ export function CockpitVR({ onInitiateWarp, onOpenResume }: CockpitVRProps) {
           </div>
         </div>
 
-        <div className="greeting-dialog">
-          <p className="greeting-tag">TRANSMISSION // FROM ROOP SAI CHARAN KOTHAMASU</p>
-          <h2>&quot;Greetings, Traveler!&quot;</h2>
+        <div className="greeting-dialog cinematic-hero-card">
+          <div className="transmission-kicker">
+            <span className="live-beacon" />
+            CHRONOS // TEMPORAL TRANSMISSION LINK
+          </div>
+
+          <h1 className="hero-name">{traveler.name}</h1>
+          <p className="hero-tagline">{traveler.role}</p>
+
+          <div className="hero-credentials-box">
+            <div className="cred-item">
+              🎓 <strong>Master&apos;s in Computer Science</strong> — University of Florida (Graduating <strong>May 2027</strong>)
+            </div>
+            <div className="cred-item highlight-role">
+              💼 <strong>Seeking 2027 New-Graduate Software Engineering and AI/ML Opportunities</strong>
+            </div>
+          </div>
+
           <p className="greeting-speech">
-            Welcome aboard the <strong>Doraemon-Class Temporal Machine</strong>! You are in the pilot&apos;s seat, behind the control desk and iconic arched gooseneck lamp.
-          </p>
-          <p className="greeting-instructions">
-            Every era across time features a unique 3D environment with trees, sky, ground, and dedicated projects.
-            Use the cockpit screen to cycle through and preview all eras, then pull the red time lever to jump into history!
+            Welcome aboard the <strong>Doraemon-Class Temporal Machine</strong>. Step behind the iconic arched gooseneck lamp and wooden control console to explore 7 historical engineering destinations across time, or jump straight into the Recruiter View for 60-second access to verified case studies, architecture breakdowns, and research publications.
           </p>
 
-          <button
-            type="button"
-            className="init-cockpit-btn"
-            onClick={handleStartGreeting}
-          >
-            ENTER COCKPIT & TAKE THE CONTROLS ⚡
-          </button>
+          {/* Primary Action Buttons */}
+          <div className="cinematic-actions-grid">
+            <button
+              type="button"
+              className="cinematic-primary-btn"
+              onClick={handleStartExplorer}
+            >
+              🚀 EXPLORE MY UNIVERSE — 3D MODE
+            </button>
+
+            {onSwitchToProfessional && (
+              <button
+                type="button"
+                className="cinematic-recruiter-btn"
+                onClick={() => {
+                  sounds.playGreetingChime()
+                  onSwitchToProfessional()
+                }}
+              >
+                💼 QUICK RECRUITER VIEW (60-SEC)
+              </button>
+            )}
+
+            <button
+              type="button"
+              className="cinematic-outline-btn"
+              onClick={onOpenResume}
+            >
+              📄 DOWNLOAD RESUME
+            </button>
+
+            <a
+              href={links.github}
+              target="_blank"
+              rel="noreferrer"
+              className="cinematic-outline-btn"
+            >
+              🐙 GITHUB (ROOPSAICHARAN)
+            </a>
+
+            <a
+              href={links.linkedin}
+              target="_blank"
+              rel="noreferrer"
+              className="cinematic-outline-btn"
+            >
+              💼 LINKEDIN
+            </a>
+          </div>
         </div>
       </div>
     )
   }
 
-  // Phase 2: Doraemon Cockpit View & CRT Screen showing ALL Eras
+  // ==========================================
+  // PHASE 2: 3D TIME MACHINE COCKPIT & CRT CONTROLS
+  // ==========================================
   return (
-    <div className="cockpit-vr-view doraemon-cockpit">
+    <div className={`cockpit-vr-view doraemon-cockpit ${switches.shields ? 'shields-active' : ''}`}>
+      {/* Hexagonal Time Shield Visual Overlay */}
+      {switches.shields && <div className="time-shield-field" />}
+
       {/* Windshield / Lookahead with Gooseneck Lamp & Floating Clocks */}
       <div className="cockpit-windshield doraemon-windshield">
-        <div className="doraemon-gooseneck-lamp">
+        {/* Iconic Arched Gooseneck Lamp with Dynamic Illumination */}
+        <div className={`doraemon-gooseneck-lamp ${switches.lamp ? 'is-illuminated' : 'is-dim'}`}>
           <div className="lamp-curved-stalk" />
           <div className="lamp-shade">
             <div className="lamp-bulb-glow" />
           </div>
+          {switches.lamp && <div className="lamp-light-beam" />}
         </div>
 
+        {/* Floating Clocks */}
         <div className="floating-clock-prop clock-1">
           <div className="clock-face">
             <span className="clock-hand hour" />
@@ -128,10 +198,11 @@ export function CockpitVR({ onInitiateWarp, onOpenResume }: CockpitVRProps) {
           </div>
         </div>
 
+        {/* HUD Target Lock */}
         <div className="crosshair-hud">
           <div className="crosshair-ring" />
           <div className="crosshair-data">
-            DESTINATION: {selectedEra.name.toUpperCase()} // {selectedEra.year}
+            DESTINATION: <strong>{selectedEra.name.toUpperCase()}</strong> // TARGET: [{selectedEra.targetYear}]
           </div>
         </div>
       </div>
@@ -145,12 +216,12 @@ export function CockpitVR({ onInitiateWarp, onOpenResume }: CockpitVRProps) {
           <div className="toggle-grid">
             <button
               type="button"
-              className={`cockpit-switch ${switches.flux ? 'is-armed' : ''}`}
-              onClick={() => toggleSwitch('flux')}
+              className={`cockpit-switch ${switches.lamp ? 'is-armed' : ''}`}
+              onClick={() => toggleSwitch('lamp')}
             >
               <span className="switch-toggle" />
               <span className="switch-label">GOOSENECK LAMP</span>
-              <span className="switch-status">{switches.flux ? 'ILLUMINATED' : 'DIM'}</span>
+              <span className="switch-status">{switches.lamp ? 'WARM GOLD' : 'DIMMED'}</span>
             </button>
 
             <button
@@ -160,32 +231,32 @@ export function CockpitVR({ onInitiateWarp, onOpenResume }: CockpitVRProps) {
             >
               <span className="switch-toggle" />
               <span className="switch-label">TIME SHIELDS</span>
-              <span className="switch-status">{switches.shields ? 'ONLINE' : 'OFFLINE'}</span>
+              <span className="switch-status">{switches.shields ? 'HEX ONLINE' : 'STANDBY'}</span>
             </button>
 
             <button
               type="button"
-              className={`cockpit-switch ${switches.stabilizers ? 'is-armed' : ''}`}
-              onClick={() => toggleSwitch('stabilizers')}
+              className={`cockpit-switch ${switches.hover ? 'is-armed' : ''}`}
+              onClick={() => toggleSwitch('hover')}
             >
               <span className="switch-toggle" />
               <span className="switch-label">HOVER ROLLERS</span>
-              <span className="switch-status">{switches.stabilizers ? 'LOCKED' : 'DRIFTING'}</span>
+              <span className="switch-status">{switches.hover ? 'REPULSING' : 'LOCKED'}</span>
             </button>
 
             <button
               type="button"
-              className={`cockpit-switch ${switches.hyperdrive ? 'is-armed' : ''}`}
-              onClick={() => toggleSwitch('hyperdrive')}
+              className={`cockpit-switch ${switches.cores ? 'is-armed' : ''}`}
+              onClick={() => toggleSwitch('cores')}
             >
               <span className="switch-toggle" />
               <span className="switch-label">CHRONO CORES</span>
-              <span className="switch-status">{switches.hyperdrive ? 'PRIMED' : 'STANDBY'}</span>
+              <span className="switch-status">{switches.cores ? 'PRIMED 1.21GW' : 'STANDBY'}</span>
             </button>
           </div>
 
           <div className="dash-telemetry">
-            <div>FLUX: <strong>1.21 GW</strong></div>
+            <div>TEMPORAL CORES: <strong>{switches.cores ? '8/8 SYNC' : 'CHARGING'}</strong></div>
             <div>STATUS: <strong style={{ color: '#00ff88' }}>WARP READY</strong></div>
           </div>
         </div>
@@ -197,7 +268,7 @@ export function CockpitVR({ onInitiateWarp, onOpenResume }: CockpitVRProps) {
 
             <div className="crt-header">
               <span className="blink-dot">●</span>
-              <span>TEMPORAL VECTOR RADAR // BROWSE ALL ERAS</span>
+              <span>TEMPORAL VECTOR RADAR // DESTINATION PREVIEW</span>
               <span>ERA {eraIndex + 1} OF {eras.length}</span>
             </div>
 
@@ -207,8 +278,8 @@ export function CockpitVR({ onInitiateWarp, onOpenResume }: CockpitVRProps) {
                 <button type="button" className="crt-arrow-btn" onClick={handlePrevEra}>
                   ◀ PREV ERA
                 </button>
-                <span className="crt-era-index-label">
-                  [{selectedEra.shortYear}] {selectedEra.year}
+                <span className="crt-era-index-label" style={{ color: selectedEra.color }}>
+                  ORIGIN: [2027] ➔ TARGET: [{selectedEra.targetYear}]
                 </span>
                 <button type="button" className="crt-arrow-btn" onClick={handleNextEra}>
                   NEXT ERA ▶
@@ -235,71 +306,78 @@ export function CockpitVR({ onInitiateWarp, onOpenResume }: CockpitVRProps) {
                       </span>
                     ))}
                   </div>
+                  <p style={{ fontSize: '0.74rem', color: '#94a3b8', margin: '0.2rem 0' }}>
+                    {selectedEra.featuredProject.summary.slice(0, 140)}...
+                  </p>
                 </div>
 
                 <p className="crt-desc">{selectedEra.tease}</p>
               </div>
 
-              {/* All Era Selector Pills at Bottom of Screen */}
-              <div className="crt-era-buttons">
-                {eras.map((era, idx) => (
+              {/* 7 Quick Era Jump Buttons */}
+              <div className="crt-timeline-strip">
+                {eras.map((e, idx) => (
                   <button
-                    key={era.id}
+                    key={e.id}
                     type="button"
-                    className={`crt-era-pill ${idx === eraIndex ? 'active' : ''}`}
+                    className={`crt-strip-node ${idx === eraIndex ? 'active' : ''}`}
                     onClick={() => handleSelectEra(idx)}
+                    title={e.name}
                   >
-                    <span>{era.shortYear}</span>
-                    <small>{era.section}</small>
+                    <span>{e.shortYear}</span>
                   </button>
                 ))}
               </div>
             </div>
-
-            <div className="crt-footer">
-              <span>PILOT: {traveler.name.toUpperCase()} (UF CS)</span>
-              <button type="button" className="crt-resume-link" onClick={onOpenResume}>
-                📄 VIEW RESUME
-              </button>
-            </div>
           </div>
         </div>
 
-        {/* Right Instrument Cluster: Pull Lever */}
+        {/* Right Cockpit: PHYSICAL RED TIME TRAVEL LEVER */}
         <div className="dash-cluster lever-cluster">
-          <div className="cluster-header">TEMPORAL BREACH DRIVE</div>
+          <div className="cluster-header">WARP DRIVE ENGAGEMENT</div>
 
-          <div className="lever-assembly">
-            <div className="lever-track">
-              <div className="lever-track-labels">
-                <span>WARP</span>
-                <span>ARM</span>
-                <span>IDLE</span>
-              </div>
-              <button
-                type="button"
-                className={`lever-handle doraemon-lever-handle ${leverPosition === 'pulled' ? 'is-pulled' : ''}`}
-                onClick={handlePullLever}
-                title="Pull red lever to engage warp!"
-              >
-                <div className="lever-knob">
-                  <span>PULL</span>
+          <div className="lever-mechanism-box">
+            <div className="lever-housing">
+              <div className="lever-slot">
+                <div
+                  className={`physical-time-lever ${leverPosition}`}
+                  onClick={handlePullLever}
+                  title="Click or pull to warp into this era!"
+                >
+                  <div className="lever-shaft" />
+                  <div className="lever-red-knob">
+                    <span className="knob-sheen" />
+                  </div>
                 </div>
-                <div className="lever-shaft" />
-              </button>
+              </div>
             </div>
 
-            <button
-              type="button"
-              className="jump-engage-btn doraemon-jump-btn"
-              onClick={handlePullLever}
-            >
-              ⚡ PULL RED LEVER TO WARP
-            </button>
+            <div className="lever-instructions">
+              <p className="lever-label">DORAEMON TIME LEVER</p>
+              <button
+                type="button"
+                className="warp-engage-btn"
+                onClick={handlePullLever}
+                disabled={leverPosition !== 'idle'}
+              >
+                {leverPosition === 'idle' ? 'PULL RED LEVER ⚡' : 'WARPING...'}
+              </button>
+            </div>
           </div>
 
-          <div className="lever-subnote">
-            Target Era: <strong>{selectedEra.name}</strong>
+          <div className="cockpit-footer-actions">
+            <button type="button" className="cockpit-aux-btn" onClick={onOpenResume}>
+              📄 RESUME
+            </button>
+            {onSwitchToProfessional && (
+              <button
+                type="button"
+                className="cockpit-aux-btn"
+                onClick={onSwitchToProfessional}
+              >
+                💼 RECRUITER MODE
+              </button>
+            )}
           </div>
         </div>
       </div>

@@ -94,6 +94,7 @@ export function ChronosHub() {
         <CockpitVR
           onInitiateWarp={handleInitiateWarp}
           onOpenResume={() => setIsResumeOpen(true)}
+          onSwitchToProfessional={() => setMode('professional')}
         />
       )}
 

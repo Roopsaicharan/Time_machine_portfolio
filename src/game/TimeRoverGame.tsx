@@ -30,6 +30,7 @@ export function TimeRoverGame({
   const currentEra: EraDefinition = eras.find((e) => e.id === currentEraId) || eras[0]
 
   const [activeProject, setActiveProject] = useState<typeof currentEra.featuredProject | null>(null)
+  const activeProjectRef = useRef<typeof currentEra.featuredProject | null>(null)
   const [selectedModalProject, setSelectedModalProject] = useState<typeof currentEra.featuredProject | null>(null)
   const [crystalsCount, setCrystalsCount] = useState<number>(0)
   const [speedDisplay, setSpeedDisplay] = useState<number>(0)
@@ -211,8 +212,8 @@ export function TimeRoverGame({
         sounds.playBump()
       }
       if (e.key === 'e' || e.key === 'E' || e.key === 'Enter') {
-        if (activeProject) {
-          setSelectedModalProject(activeProject)
+        if (activeProjectRef.current) {
+          setSelectedModalProject(activeProjectRef.current)
           sounds.playGreetingChime()
         }
       }
@@ -253,6 +254,11 @@ export function TimeRoverGame({
         c.minuteHand.rotation.z -= delta * c.speed * 3.0
         c.mesh.position.y += Math.sin(time * 2 + c.speed) * 0.005
       })
+
+      // Animate architectural world objects (radars, gears, energy rings)
+      if (envObjects.animatedObjects) {
+        envObjects.animatedObjects.forEach((obj) => obj.update(time, delta))
+      }
 
       let currentMaxSpeed = rover.maxSpeed
       if (keys.boost) {
@@ -351,8 +357,10 @@ export function TimeRoverGame({
       // Check proximity to the Era's Project Pavilion
       const distToPavilion = rover.position.distanceTo(pavilionPos)
       if (distToPavilion < 8.5) {
+        activeProjectRef.current = currentEra.featuredProject
         setActiveProject(currentEra.featuredProject)
       } else {
+        activeProjectRef.current = null
         setActiveProject(null)
       }
 
