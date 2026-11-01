@@ -37,6 +37,10 @@ export function TimeRoverGame({
   const [isBoosting, setIsBoosting] = useState<boolean>(false)
   const [soundMuted, setSoundMuted] = useState<boolean>(sounds.getMuted())
   const [isFirstPerson, setIsFirstPerson] = useState<boolean>(true) // default to pilot chair cockpit view!
+  const isFirstPersonRef = useRef<boolean>(isFirstPerson)
+  useEffect(() => {
+    isFirstPersonRef.current = isFirstPerson
+  }, [isFirstPerson])
 
   // Keys ref
   const keysRef = useRef<{
@@ -195,6 +199,10 @@ export function TimeRoverGame({
 
     // Keyboard Listeners
     const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null
+      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) {
+        return
+      }
       sounds.startEngine()
       if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') keysRef.current.forward = true
       if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') keysRef.current.backward = true
@@ -364,8 +372,8 @@ export function TimeRoverGame({
         setActiveProject(null)
       }
 
-      // Camera Perspective: Pilot Seat vs 3rd Person
-      if (isFirstPerson) {
+      // Camera Perspective: Pilot Seat vs 3rd Person (Decoupled from Scene Rebuild)
+      if (isFirstPersonRef.current) {
         const pilotHeadPos = rover.position.clone().add(
           new THREE.Vector3(
             -Math.sin(rover.heading) * -0.4,
@@ -404,12 +412,28 @@ export function TimeRoverGame({
       window.removeEventListener('keydown', handleKeyDown)
       window.removeEventListener('keyup', handleKeyUp)
       window.removeEventListener('resize', handleResize)
-      if (mount && renderer.domElement) {
+
+      // Thorough GPU resource disposal
+      scene.traverse((obj) => {
+        if (obj instanceof THREE.Mesh) {
+          if (obj.geometry) obj.geometry.dispose()
+          if (obj.material) {
+            if (Array.isArray(obj.material)) {
+              obj.material.forEach((m) => m.dispose())
+            } else {
+              obj.material.dispose()
+            }
+          }
+        }
+      })
+
+      if (mount && renderer.domElement && mount.contains(renderer.domElement)) {
         mount.removeChild(renderer.domElement)
       }
       renderer.dispose()
+      renderer.forceContextLoss()
     }
-  }, [currentEra, isFirstPerson])
+  }, [currentEra])
 
   return (
     <div className="rover-game-container">
@@ -573,6 +597,8 @@ export function TimeRoverGame({
               className="dpad-btn up"
               onPointerDown={() => handleTouchControl('forward', true)}
               onPointerUp={() => handleTouchControl('forward', false)}
+              onPointerLeave={() => handleTouchControl('forward', false)}
+              onPointerCancel={() => handleTouchControl('forward', false)}
             >
               ▲
             </button>
@@ -581,6 +607,8 @@ export function TimeRoverGame({
                 className="dpad-btn left"
                 onPointerDown={() => handleTouchControl('left', true)}
                 onPointerUp={() => handleTouchControl('left', false)}
+                onPointerLeave={() => handleTouchControl('left', false)}
+                onPointerCancel={() => handleTouchControl('left', false)}
               >
                 ◀
               </button>
@@ -595,6 +623,8 @@ export function TimeRoverGame({
                 className="dpad-btn right"
                 onPointerDown={() => handleTouchControl('right', true)}
                 onPointerUp={() => handleTouchControl('right', false)}
+                onPointerLeave={() => handleTouchControl('right', false)}
+                onPointerCancel={() => handleTouchControl('right', false)}
               >
                 ▶
               </button>
@@ -606,6 +636,8 @@ export function TimeRoverGame({
               className="mobile-action-btn boost"
               onPointerDown={() => handleTouchControl('boost', true)}
               onPointerUp={() => handleTouchControl('boost', false)}
+              onPointerLeave={() => handleTouchControl('boost', false)}
+              onPointerCancel={() => handleTouchControl('boost', false)}
             >
               NITRO
             </button>

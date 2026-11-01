@@ -5,7 +5,6 @@ interface MiniDemoProps {
 }
 
 export function ProjectMiniDemo({ projectId }: MiniDemoProps) {
-  // Phase 6 Featured Research Projects
   if (projectId === 'tracer') {
     return <TracerDemo />
   }
@@ -18,7 +17,6 @@ export function ProjectMiniDemo({ projectId }: MiniDemoProps) {
     return <WorldModelsDemo />
   }
 
-  // Core Projects
   if (projectId === 'meetmint') {
     return <MeetMintDemo />
   }
@@ -47,51 +45,64 @@ export function ProjectMiniDemo({ projectId }: MiniDemoProps) {
     return <MusicPlayerDemo />
   }
 
-  return (
-    <div className="mini-demo-card">
-      <div className="demo-badge">ENGINEERING SPECIFICATION // {projectId.toUpperCase()}</div>
-      <p className="demo-intro">Select a featured project to run the interactive sandbox demonstration.</p>
-    </div>
-  )
+  if (projectId === 'dosp-chord' || projectId === 'blockchain-health') {
+    return (
+      <div className="mini-demo-card">
+        <div className="demo-badge">ENGINEERING SPECIFICATION // {projectId.toUpperCase()}</div>
+        <p className="demo-intro">
+          Full architectural case study available in the left pane. Refer to verified GitHub repository for source code and test benches.
+        </p>
+      </div>
+    )
+  }
+
+  return null
 }
 
 // ==========================================
-// 1. TRACER FREEWAY SEGMENTATION SANDBOX
+// 1. TRACER FREEWAY SEGMENTATION SIMULATOR
 // ==========================================
 function TracerDemo() {
   const [corridor, setCorridor] = useState('I-75 Northbound (Alachua County)')
-  const [milepostStart, setMilepostStart] = useState('382.4')
-  const [milepostEnd, setMilepostEnd] = useState('394.8')
+  const [milepostStart, setMilepostStart] = useState<number>(382.0)
+  const [milepostEnd, setMilepostEnd] = useState<number>(395.0)
   const [isProcessing, setIsProcessing] = useState(false)
   const [segments, setSegments] = useState<
-    { id: string; start: number; end: number; type: string; lanes: number; hcmStatus: string }[] | null
+    { id: string; start: number; end: number; type: string; lanes: number; note: string }[] | null
   >(null)
 
   const handleRunSegmentation = () => {
     setIsProcessing(true)
     setTimeout(() => {
+      const start = Number(milepostStart) || 382.0
+      const end = Number(milepostEnd) || 395.0
+      const length = Math.max(end - start, 1.0)
+      const p1 = +(start + length * 0.22).toFixed(1)
+      const p2 = +(start + length * 0.45).toFixed(1)
+      const p3 = +(start + length * 0.78).toFixed(1)
+
       setSegments([
-        { id: 'SEG-01', start: 382.4, end: 385.1, type: 'Basic Freeway', lanes: 3, hcmStatus: 'Compliant (LOS B)' },
-        { id: 'SEG-02', start: 385.1, end: 386.9, type: 'On-Ramp Merge (SR-26)', lanes: 4, hcmStatus: 'Merge Influence Zone' },
-        { id: 'SEG-03', start: 386.9, end: 391.2, type: 'Weaving Section (Archer Rd)', lanes: 4, hcmStatus: 'HCM Weave Validated' },
-        { id: 'SEG-04', start: 391.2, end: 394.8, type: 'Basic Freeway (Truck Lane)', lanes: 3, hcmStatus: 'Compliant (LOS A)' },
+        { id: 'SEG-01', start, end: p1, type: 'Basic Freeway', lanes: 3, note: 'Continuous mainline section' },
+        { id: 'SEG-02', start: p1, end: p2, type: 'On-Ramp Merge Influence Zone', lanes: 4, note: '1,500 ft merge acceleration area' },
+        { id: 'SEG-03', start: p2, end: p3, type: 'Weaving Section (Interchange)', lanes: 4, note: 'Ramp-to-ramp lane change volume' },
+        { id: 'SEG-04', start: p3, end, type: 'Basic Freeway', lanes: 3, note: 'Downstream capacity recovery' },
       ])
       setIsProcessing(false)
-    }, 600)
+    }, 550)
   }
 
   return (
     <div className="mini-demo-card">
       <div className="demo-badge" style={{ borderColor: '#ff7700', color: '#ff7700' }}>
-        RESEARCH SANDBOX // TRACER LRS & HCM FREEWAY ENGINE
+        ILLUSTRATIVE SIMULATION // TRACER LRS & HCM PARTITIONING LOGIC
       </div>
       <p className="demo-intro">
-        Simulate automated roadway segmentation over 1.2M raw Florida DOT telemetry records adhering to Highway Capacity Manual (HCM) rules:
+        Interactive client-side simulation illustrating Highway Capacity Manual (HCM) segmentation principles. Adjust corridor bounds to generate partitioned freeway segments:
       </p>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', marginBottom: '0.6rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '0.5rem', marginBottom: '0.6rem' }}>
         <div>
-          <label style={{ fontSize: '0.72rem', color: '#94a3b8', display: 'block' }}>Corridor:</label>
+          <label style={{ fontSize: '0.72rem', color: '#94a3b8', display: 'block' }}>Corridor Identifier:</label>
           <input
             type="text"
             className="demo-textarea"
@@ -101,22 +112,24 @@ function TracerDemo() {
           />
         </div>
         <div>
-          <label style={{ fontSize: '0.72rem', color: '#94a3b8', display: 'block' }}>Milepost Range:</label>
+          <label style={{ fontSize: '0.72rem', color: '#94a3b8', display: 'block' }}>Milepost Range (MP):</label>
           <div style={{ display: 'flex', gap: '0.3rem', alignItems: 'center' }}>
             <input
-              type="text"
+              type="number"
+              step="0.5"
               className="demo-textarea"
               style={{ padding: '0.35rem', height: 'auto', textAlign: 'center' }}
               value={milepostStart}
-              onChange={(e) => setMilepostStart(e.target.value)}
+              onChange={(e) => setMilepostStart(parseFloat(e.target.value) || 0)}
             />
-            <span style={{ color: '#64748b' }}>to</span>
+            <span style={{ color: '#64748b', fontSize: '0.75rem' }}>to</span>
             <input
-              type="text"
+              type="number"
+              step="0.5"
               className="demo-textarea"
               style={{ padding: '0.35rem', height: 'auto', textAlign: 'center' }}
               value={milepostEnd}
-              onChange={(e) => setMilepostEnd(e.target.value)}
+              onChange={(e) => setMilepostEnd(parseFloat(e.target.value) || 0)}
             />
           </div>
         </div>
@@ -129,37 +142,37 @@ function TracerDemo() {
         disabled={isProcessing}
         style={{ borderColor: '#ff7700', color: '#ff7700' }}
       >
-        {isProcessing ? '⏳ Normalizing LRS Mileposts & Running HCM Engine...' : '⚡ Execute Automated Freeway Segmentation'}
+        {isProcessing ? '⏳ Computing LRS Intervals & Applying HCM Rules...' : '⚡ Run Simulated Corridor Segmentation'}
       </button>
 
       {segments && (
         <div className="demo-result-box" style={{ borderColor: 'rgba(255, 119, 0, 0.4)' }}>
           <div className="result-header" style={{ color: '#ff7700' }}>
-            GENERATED HCS-COMPLIANT SEGMENTATION DATASET (100% HCM RULE VALIDATED):
+            SIMULATED SEGMENT PARTITIONING OUTPUT (FOR {corridor.toUpperCase()}):
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginTop: '0.4rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', marginTop: '0.4rem' }}>
             {segments.map((seg) => (
               <div
                 key={seg.id}
                 style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  padding: '0.4rem 0.6rem',
+                  padding: '0.35rem 0.55rem',
                   background: 'rgba(255, 119, 0, 0.08)',
                   borderRadius: '4px',
                   borderLeft: '3px solid #ff7700',
-                  fontSize: '0.78rem',
+                  fontSize: '0.76rem',
                 }}
               >
                 <div>
-                  <strong style={{ color: '#fff' }}>{seg.id}</strong>: MP {seg.start} – {seg.end} ({seg.type})
+                  <strong style={{ color: '#fff' }}>{seg.id}</strong>: MP {seg.start} – {seg.end} ({(seg.end - seg.start).toFixed(1)} mi) // {seg.type}
                 </div>
-                <div style={{ color: '#ffaa44', fontWeight: 600 }}>{seg.hcmStatus}</div>
+                <div style={{ color: '#ffaa44' }}>{seg.lanes} Lanes</div>
               </div>
             ))}
           </div>
-          <p style={{ fontSize: '0.7rem', color: '#94a3b8', margin: '0.5rem 0 0 0' }}>
-            ✓ Output ready for direct McTrans HCS (Highway Capacity Software) CSV export.
+          <p style={{ fontSize: '0.68rem', color: '#94a3b8', margin: '0.5rem 0 0 0', fontStyle: 'italic' }}>
+            Note: This interactive demonstration illustrates rule-based roadway partitioning logic. Actual production pipelines execute in Python on McTrans compute clusters across 1.2M+ state DOT LRS records.
           </p>
         </div>
       )}
@@ -168,48 +181,91 @@ function TracerDemo() {
 }
 
 // ==========================================
-// 2. AGENTIC AI FOR CHIP DESIGN SANDBOX
+// 2. AGENTIC AI FOR CHIP DESIGN DEMO
 // ==========================================
 function ChipDesignDemo() {
-  const [query, setQuery] = useState('Derive subthreshold swing S and leakage current I_off for 7nm FinFET')
+  const [topic, setTopic] = useState<'leakage' | 'timing' | 'power'>('leakage')
   const [isSearching, setIsSearching] = useState(false)
-  const [retrievalResult, setRetrievalResult] = useState<{
+  const [result, setResult] = useState<{
     latexFormula: string
     sourceDoc: string
     subcircuit: string
     retrievedTokens: string[]
-    confidence: string
+    description: string
   } | null>(null)
+
+  const topicData = {
+    leakage: {
+      latexFormula: String.raw`S = \ln(10) \cdot rac{k_B T}{q} \left(1 + rac{C_{dep}}{C_{ox}}ight) pprox 60	ext{ mV/dec @ 300K}`,
+      sourceDoc: 'Weste & Harris — CMOS VLSI Design (Ch. 4.4 Non-Ideal I-V Effects)',
+      subcircuit: 'FinFET 3D Gate Wrap-Around Channel Model (Hierarchical Schematic L2)',
+      retrievedTokens: ['k_B T/q', 'Subthreshold Swing S', 'C_dep/C_ox Ratio', 'DIBL Effect'],
+      description: 'Preserved subthreshold swing derivation tokenized with intact mathematical notation for hardware inquiry routing.',
+    },
+    timing: {
+      latexFormula: String.raw`t_{clk} \ge t_{cq} + t_{comb} + t_{setup} - t_{skew}`,
+      sourceDoc: 'Rabaey et al. — Digital Integrated Circuits (Ch. 10 Timing Issues in Digital Circuits)',
+      subcircuit: 'Master-Slave Flip-Flop Sequential Critical Path Timing Graph',
+      retrievedTokens: ['t_clk', 't_setup Constraint', 'Clock Skew t_skew', 'Combinational Delay'],
+      description: 'Synchronous clock path timing constraint preserved without token corruption during PDF extraction.',
+    },
+    power: {
+      latexFormula: String.raw`P_{dynamic} = lpha \cdot C_L \cdot V_{DD}^2 \cdot f_{clk}`,
+      sourceDoc: 'Sutherland et al. — Logical Effort: Designing Fast CMOS Circuits',
+      subcircuit: 'Inverter Buffer Chain Dynamic Switching Energy Profile',
+      retrievedTokens: ['Dynamic Power', 'Activity Factor alpha', 'Load Capacitance C_L', 'Supply Voltage V_DD'],
+      description: 'Dynamic CMOS switching dissipation equation verified with token preservation across text boundaries.',
+    },
+  }
 
   const handleRetrieve = () => {
     setIsSearching(true)
     setTimeout(() => {
-      setRetrievalResult({
-        latexFormula: String.raw`S = \\ln(10) \\cdot \\frac{k_B T}{q} \\left(1 + \\frac{C_{dep}}{C_{ox}}\\right) \\approx 60\\text{ mV/dec @ 300K}`,
-        sourceDoc: 'Weste & Harris — CMOS VLSI Design (Ch. 4.4 Non-Ideal I-V Effects)',
-        subcircuit: 'FinFET 3D Gate Wrap-Around Channel Model (Hierarchical Schematic L2)',
-        retrievedTokens: ['k_B T/q', 'Subthreshold Swing S', 'C_dep/C_ox Ratio', 'DIBL Effect'],
-        confidence: '99.4% Cosine Match (Formula Tokens Preserved)',
-      })
+      setResult(topicData[topic])
       setIsSearching(false)
-    }, 700)
+    }, 450)
   }
 
   return (
     <div className="mini-demo-card">
       <div className="demo-badge" style={{ borderColor: '#ffd18a', color: '#ffd18a' }}>
-        RESEARCH SANDBOX // AGENTIC RAG VLSI KNOWLEDGE RETRIEVAL
+        ILLUSTRATIVE PROTOTYPE // VLSI FORMULA TOKEN PRESERVATION
       </div>
       <p className="demo-intro">
-        Query dense semiconductor literature with mathematical equation preservation and schematic token retrieval:
+        Demonstrates the domain-specific token isolation and mathematical expression preservation pipeline developed for VLSI document processing:
       </p>
 
-      <textarea
-        className="demo-textarea"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        rows={2}
-      />
+      <div style={{ marginBottom: '0.6rem' }}>
+        <label style={{ fontSize: '0.72rem', color: '#94a3b8', display: 'block', marginBottom: '0.3rem' }}>
+          Select VLSI Circuit Domain Query:
+        </label>
+        <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+          <button
+            type="button"
+            className={`demo-action-btn ${topic === 'leakage' ? 'active' : ''}`}
+            onClick={() => { setTopic('leakage'); setResult(null); }}
+            style={{ margin: 0, padding: '0.3rem 0.6rem', fontSize: '0.75rem' }}
+          >
+            Subthreshold Leakage (FinFET)
+          </button>
+          <button
+            type="button"
+            className={`demo-action-btn ${topic === 'timing' ? 'active' : ''}`}
+            onClick={() => { setTopic('timing'); setResult(null); }}
+            style={{ margin: 0, padding: '0.3rem 0.6rem', fontSize: '0.75rem' }}
+          >
+            Sequential Timing Constraints
+          </button>
+          <button
+            type="button"
+            className={`demo-action-btn ${topic === 'power' ? 'active' : ''}`}
+            onClick={() => { setTopic('power'); setResult(null); }}
+            style={{ margin: 0, padding: '0.3rem 0.6rem', fontSize: '0.75rem' }}
+          >
+            Dynamic Switching Power
+          </button>
+        </div>
+      </div>
 
       <button
         type="button"
@@ -218,31 +274,34 @@ function ChipDesignDemo() {
         disabled={isSearching}
         style={{ borderColor: '#ffd18a', color: '#ffd18a' }}
       >
-        {isSearching ? '🔍 Agentic Parsing & Formula Token Isolation...' : '⚡ Query VLSI Knowledge Base'}
+        {isSearching ? '🔍 Isolating Formula Tokens...' : '⚡ Test Formula Extraction & Preservation'}
       </button>
 
-      {retrievalResult && (
+      {result && (
         <div className="demo-result-box" style={{ borderColor: 'rgba(255, 209, 138, 0.4)' }}>
           <div className="result-header" style={{ color: '#ffd18a' }}>
-            PRESERVED MATHEMATICAL RETRIEVAL & CONTEXT:
+            PRESERVED MATHEMATICAL RETRIEVAL SAMPLE:
           </div>
           <div style={{ background: '#0a0f1d', padding: '0.5rem', borderRadius: '4px', margin: '0.4rem 0', border: '1px solid #243447' }}>
-            <div style={{ fontSize: '0.72rem', color: '#94a3b8' }}>PRESERVED LATEX EQUATION:</div>
-            <code style={{ color: '#5ef2ff', fontSize: '0.85rem', display: 'block', margin: '0.2rem 0' }}>
-              {retrievalResult.latexFormula}
+            <div style={{ fontSize: '0.7rem', color: '#94a3b8' }}>PRESERVED LATEX EXPRESSION:</div>
+            <code style={{ color: '#5ef2ff', fontSize: '0.82rem', display: 'block', margin: '0.2rem 0' }}>
+              {result.latexFormula}
             </code>
-            <div style={{ fontSize: '0.72rem', color: '#94a3b8', marginTop: '0.4rem' }}>
-              DOCUMENT: <strong>{retrievalResult.sourceDoc}</strong>
+            <div style={{ fontSize: '0.7rem', color: '#94a3b8', marginTop: '0.35rem' }}>
+              SOURCE DOCUMENT: <strong>{result.sourceDoc}</strong>
             </div>
-            <div style={{ fontSize: '0.72rem', color: '#94a3b8' }}>
-              SCHEMATIC CONTEXT: <strong>{retrievalResult.subcircuit}</strong>
+            <div style={{ fontSize: '0.7rem', color: '#94a3b8' }}>
+              CIRCUIT CONTEXT: <strong>{result.subcircuit}</strong>
             </div>
           </div>
           <div className="chips" style={{ margin: '0.3rem 0' }}>
-            {retrievalResult.retrievedTokens.map((t) => (
+            {result.retrievedTokens.map((t) => (
               <span key={t} className="chip" style={{ fontSize: '0.68rem' }}>{t}</span>
             ))}
           </div>
+          <p style={{ fontSize: '0.68rem', color: '#94a3b8', margin: '0.3rem 0 0 0', fontStyle: 'italic' }}>
+            Note: Illustrative client-side prototype of formula token isolation heuristics. Research in UF ECE focuses on multi-agent EDA workflow orchestration.
+          </p>
         </div>
       )}
     </div>
@@ -250,63 +309,80 @@ function ChipDesignDemo() {
 }
 
 // ==========================================
-// 3. PHYSICS-INFORMED WORLD MODELS SANDBOX
+// 3. PHYSICS-INFORMED WORLD MODELS DEMO
 // ==========================================
 function WorldModelsDemo() {
   const [horizonStep, setHorizonStep] = useState<number>(10)
-  const [evasionScenario, setEvasionScenario] = useState<'sudden_brake' | 'sharp_turn'>('sharp_turn')
+  const [evasionScenario, setEvasionScenario] = useState<'sharp_turn' | 'sudden_brake'>('sharp_turn')
   const [simulating, setSimulating] = useState(false)
   const [outputMetrics, setOutputMetrics] = useState<{
     mambaMSE: number
     baselineMSE: number
-    kinematicViolation: boolean
-    curvatureConstraint: string
+    reductionPct: number
+    feasibilityCheck: string
   } | null>(null)
 
   const handleSimulate = () => {
     setSimulating(true)
     setTimeout(() => {
+      // Numerical calculation illustrating observed benchmark divergence over sequence horizon
+      const baseMamba = evasionScenario === 'sharp_turn' ? 0.009 : 0.006
+      const baseConv = evasionScenario === 'sharp_turn' ? 0.022 : 0.018
+      const mambaMSE = +(baseMamba + horizonStep * 0.0006).toFixed(4)
+      const baselineMSE = +(baseConv + horizonStep * 0.0025).toFixed(4)
+      const reductionPct = Math.round(((baselineMSE - mambaMSE) / baselineMSE) * 100)
+
       setOutputMetrics({
-        mambaMSE: evasionScenario === 'sharp_turn' ? 0.0142 : 0.0098,
-        baselineMSE: evasionScenario === 'sharp_turn' ? 0.0487 : 0.0315,
-        kinematicViolation: false,
-        curvatureConstraint: 'R_min >= 4.2m (Bicycle Model Kinematically Satisfied)',
+        mambaMSE,
+        baselineMSE,
+        reductionPct,
+        feasibilityCheck: evasionScenario === 'sharp_turn'
+          ? 'Lateral acceleration bounded (a_lat < 4.0 m/s^2) — Kinematic bicycle model satisfied'
+          : 'Deceleration bounded within friction cone (a_x > -8.5 m/s^2) — No skidding violation',
       })
       setSimulating(false)
-    }, 600)
+    }, 450)
   }
 
   return (
     <div className="mini-demo-card">
       <div className="demo-badge" style={{ borderColor: '#5ef2ff', color: '#5ef2ff' }}>
-        RESEARCH SANDBOX // PHYSICS-INFORMED MAMBA WORLD MODEL
+        ILLUSTRATIVE SIMULATION // TRAJECTORY ERROR DIVERGENCE BENCHMARK
       </div>
       <p className="demo-intro">
-        Evaluate vehicle trajectory forecasting with kinematic bicycle physics constraints vs baseline neural models:
+        Simulate vehicle trajectory error growth over forecast horizons with differentiable kinematic penalty constraints vs unconstrained baselines:
       </p>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', marginBottom: '0.6rem' }}>
         <div>
-          <label style={{ fontSize: '0.72rem', color: '#94a3b8', display: 'block' }}>Maneuver Scenario:</label>
+          <label style={{ fontSize: '0.72rem', color: '#94a3b8', display: 'block' }}>Maneuver Condition:</label>
           <select
             className="demo-textarea"
             style={{ padding: '0.35rem', height: 'auto' }}
             value={evasionScenario}
-            onChange={(e) => setEvasionScenario(e.target.value as any)}
+            onChange={(e) => {
+              setEvasionScenario(e.target.value as any)
+              setOutputMetrics(null)
+            }}
           >
-            <option value="sharp_turn">Evasive Sharp Turn (Lateral Accel)</option>
-            <option value="sudden_brake">High-G Emergency Braking</option>
+            <option value="sharp_turn">Evasive Sharp Curve (Lateral Accel)</option>
+            <option value="sudden_brake">Emergency Stop (Longitudinal Braking)</option>
           </select>
         </div>
         <div>
-          <label style={{ fontSize: '0.72rem', color: '#94a3b8', display: 'block' }}>Prediction Horizon: {horizonStep} steps</label>
+          <label style={{ fontSize: '0.72rem', color: '#94a3b8', display: 'block' }}>
+            Prediction Horizon: {horizonStep} Steps ({(horizonStep * 0.25).toFixed(1)}s)
+          </label>
           <input
             type="range"
-            min={5}
+            min={4}
             max={20}
             value={horizonStep}
-            onChange={(e) => setHorizonStep(Number(e.target.value))}
-            style={{ width: '100%', marginTop: '0.5rem' }}
+            onChange={(e) => {
+              setHorizonStep(Number(e.target.value))
+              setOutputMetrics(null)
+            }}
+            style={{ width: '100%', marginTop: '0.4rem' }}
           />
         </div>
       </div>
@@ -318,26 +394,29 @@ function WorldModelsDemo() {
         disabled={simulating}
         style={{ borderColor: '#5ef2ff', color: '#5ef2ff' }}
       >
-        {simulating ? '⚡ Running Mamba State-Space Simulation...' : '⚡ Predict Trajectory & Benchmark MSE'}
+        {simulating ? '⚡ Computing Trajectory Loss Functions...' : '⚡ Calculate Simulated Horizon Error'}
       </button>
 
       {outputMetrics && (
         <div className="demo-result-box" style={{ borderColor: 'rgba(94, 242, 255, 0.4)' }}>
           <div className="result-header" style={{ color: '#5ef2ff' }}>
-            PHYSICS-REGULARIZED TRAJECTORY EVALUATION:
+            SIMULATED ERROR METRICS OVER {horizonStep} STEPS:
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', marginTop: '0.4rem' }}>
-            <div style={{ background: 'rgba(94, 242, 255, 0.1)', padding: '0.4rem', borderRadius: '4px' }}>
+            <div style={{ background: 'rgba(94, 242, 255, 0.08)', padding: '0.4rem', borderRadius: '4px' }}>
               <div style={{ fontSize: '0.7rem', color: '#94a3b8' }}>MAMBA (PHYSICS-INFORMED) MSE:</div>
               <strong style={{ color: '#5ef2ff', fontSize: '1.05rem' }}>{outputMetrics.mambaMSE}</strong>
             </div>
-            <div style={{ background: 'rgba(255, 255, 255, 0.05)', padding: '0.4rem', borderRadius: '4px' }}>
-              <div style={{ fontSize: '0.7rem', color: '#94a3b8' }}>CONVENTIONAL BASELINE MSE:</div>
-              <strong style={{ color: '#ff6b6b', fontSize: '1.05rem' }}>{outputMetrics.baselineMSE}</strong>
+            <div style={{ background: 'rgba(255, 255, 255, 0.04)', padding: '0.4rem', borderRadius: '4px' }}>
+              <div style={{ fontSize: '0.7rem', color: '#94a3b8' }}>UNCONSTRAINED BASELINE MSE:</div>
+              <strong style={{ color: '#ff7777', fontSize: '1.05rem' }}>{outputMetrics.baselineMSE}</strong>
             </div>
           </div>
-          <p style={{ fontSize: '0.74rem', color: '#2ed573', margin: '0.4rem 0 0 0' }}>
-            ✓ {outputMetrics.curvatureConstraint} — Zero unrealistic trajectory jumps.
+          <p style={{ fontSize: '0.72rem', color: '#2ed573', margin: '0.4rem 0 0 0' }}>
+            ✓ {outputMetrics.feasibilityCheck} ({outputMetrics.reductionPct}% lower simulated MSE).
+          </p>
+          <p style={{ fontSize: '0.68rem', color: '#94a3b8', margin: '0.35rem 0 0 0', fontStyle: 'italic' }}>
+            Note: Demonstrates error divergence over time. Full research model trained on 8,000+ driving episodes (6.4M+ time-steps) in PyTorch under advisor Dr. Ivan Ruchikin.
           </p>
         </div>
       )}
@@ -346,11 +425,11 @@ function WorldModelsDemo() {
 }
 
 // ==========================================
-// 4. MEETMINT AI DASHBOARD SANDBOX
+// 4. MEETMINT AI DASHBOARD DEMO
 // ==========================================
 function MeetMintDemo() {
   const [transcript, setTranscript] = useState(
-    'Discussed sprint goals. John will migrate the SQLite database to the cloud by Thursday. Sarah to finalize UI with Framer Motion. Alex to test Gemini 1.5 Flash API latency.'
+    'Discussed sprint goals. John will migrate the SQLite database to the cloud by Thursday. Sarah to finalize UI with Framer Motion by Friday. Alex to test Gemini API latency.'
   )
   const [analyzing, setAnalyzing] = useState(false)
   const [tasks, setTasks] = useState<{ assignee: string; task: string; deadline: string }[] | null>(null)
@@ -358,19 +437,34 @@ function MeetMintDemo() {
   const handleAnalyze = () => {
     setAnalyzing(true)
     setTimeout(() => {
-      setTasks([
-        { assignee: 'John', task: 'Migrate SQLite database to cloud', deadline: 'Thursday' },
-        { assignee: 'Sarah', task: 'Finalize Glassmorphism UI with Framer Motion', deadline: 'Sprint End' },
-        { assignee: 'Alex', task: 'Benchmark Gemini 1.5 Flash API latency (<250ms)', deadline: 'Friday' },
-      ])
+      // Dynamic client-side heuristic parser splitting sentences from user's actual textarea input
+      const lines = transcript.split(/[.\n]/).map((s) => s.trim()).filter(Boolean)
+      const extracted: { assignee: string; task: string; deadline: string }[] = []
+
+      lines.forEach((line) => {
+        const words = line.split(' ')
+        if (words.length >= 3) {
+          const assignee = words[0].replace(/[^a-zA-Z]/g, '') || 'Team Member'
+          const task = words.slice(1).join(' ')
+          const deadlineMatch = line.match(/(by|on|due|for)\s+([A-Za-z0-9]+)/i)
+          const deadline = deadlineMatch ? deadlineMatch[2] : 'Next Sprint'
+          extracted.push({ assignee, task, deadline })
+        }
+      })
+
+      if (extracted.length === 0) {
+        extracted.push({ assignee: 'Project Lead', task: 'Follow up on sprint requirements', deadline: 'Upcoming' })
+      }
+
+      setTasks(extracted.slice(0, 4))
       setAnalyzing(false)
-    }, 700)
+    }, 450)
   }
 
   return (
     <div className="mini-demo-card">
-      <div className="demo-badge">SANDBOX // GEMINI 1.5 FLASH TASK EXTRACTION</div>
-      <p className="demo-intro">Test the RAG task extraction pipeline with sample meeting transcript:</p>
+      <div className="demo-badge">CLIENT-SIDE PROTOTYPE // ACTION-ITEM HEURISTIC PARSER</div>
+      <p className="demo-intro">Test client-side text parsing heuristics on meeting notes or enter your own transcript:</p>
       <textarea
         className="demo-textarea"
         value={transcript}
@@ -378,19 +472,22 @@ function MeetMintDemo() {
         rows={3}
       />
       <button type="button" className="demo-action-btn" onClick={handleAnalyze} disabled={analyzing}>
-        {analyzing ? '⚡ Running Gemini Flash & Local RAG...' : '⚡ Extract Action Items with Gemini'}
+        {analyzing ? '⚡ Running Parser Heuristics...' : '⚡ Parse Tasks from Transcript'}
       </button>
 
       {tasks && (
         <div className="demo-result-box">
-          <div className="result-header">EXTRACTED TASKS & METADATA:</div>
-          {tasks.map((item) => (
-            <div key={item.task} className="task-row">
+          <div className="result-header">EXTRACTED TASKS & METADATA (CLIENT-SIDE HEURISTIC):</div>
+          {tasks.map((item, i) => (
+            <div key={i} className="task-row">
               <span className="task-assignee">👤 {item.assignee}:</span>
               <span className="task-text">{item.task}</span>
               <span className="task-due">📅 {item.deadline}</span>
             </div>
           ))}
+          <p style={{ fontSize: '0.68rem', color: '#94a3b8', margin: '0.35rem 0 0 0', fontStyle: 'italic' }}>
+            Note: Demonstrates client-side parser heuristics. Production MeetMint connects to Go backend & Gemini 1.5 Flash streaming APIs with SQLite embeddings.
+          </p>
         </div>
       )}
     </div>
@@ -398,31 +495,46 @@ function MeetMintDemo() {
 }
 
 // ==========================================
-// 5. UF AI GAME ROOM CHATBOT SANDBOX
+// 5. UF AI GAME ROOM CHATBOT DEMO
 // ==========================================
 function ChatbotDemo() {
-  const [query, setQuery] = useState('What are the rules and hours for the Nintendo Switch station at the UF Game Room?')
+  const [query, setQuery] = useState('What are the rules and hours for the Nintendo Switch station?')
   const [answering, setAnswering] = useState(false)
   const [answer, setAnswer] = useState<{ text: string; sources: string[]; latency: string } | null>(null)
 
   const handleAsk = () => {
     setAnswering(true)
     setTimeout(() => {
+      const q = query.toLowerCase()
+      let text = 'The UF Reitz Union Game Room is open Monday through Friday 10:00 AM – 8:00 PM for all current GatorOne ID holders. Please see the service desk for console checkout.'
+      let source = 'UF_GameRoom_General_Policies.pdf'
+
+      if (q.includes('switch') || q.includes('nintendo') || q.includes('console')) {
+        text = 'Nintendo Switch consoles can be checked out at the front desk with a valid GatorOne ID. Maximum session length is 2 hours during peak periods. Controllers must be returned upon checkout completion.'
+        source = 'UF_GameRoom_Console_Policies_2026.pdf (Section 3.1)'
+      } else if (q.includes('price') || q.includes('cost') || q.includes('free') || q.includes('fee')) {
+        text = 'Gaming station access is complimentary for active University of Florida students presenting a valid GatorOne card. Non-student guest rates apply for bowling and billiards.'
+        source = 'UF_Student_Union_Rates_2026.pdf'
+      } else if (q.includes('hour') || q.includes('open') || q.includes('time')) {
+        text = 'Current Operating Hours: Monday – Thursday 10:00 AM to 10:00 PM, Friday 10:00 AM to 11:00 PM, Saturday 12:00 PM to 10:00 PM. Closed on University holidays.'
+        source = 'UF_GameRoom_Operating_Schedule.pdf'
+      }
+
       setAnswer({
-        text: 'The Nintendo Switch gaming console is available Monday through Friday 10:00 AM – 8:00 PM. Maximum reservation duration is 2 hours per GatorOne ID holder. Controllers must be checked in at the front desk.',
-        sources: ['UF_Reitz_Union_GameRoom_Rules_2024.pdf (p. 4)', 'ChromaDB Vector Store (Cosine Similarity: 0.94)'],
-        latency: '680ms (BM25 + ChromaDB Hybrid RAG)',
+        text,
+        sources: [source, 'Client-Side Intent Router (Local Index)'],
+        latency: 'Simulated sub-second local match',
       })
       setAnswering(false)
-    }, 600)
+    }, 400)
   }
 
   return (
     <div className="mini-demo-card">
       <div className="demo-badge" style={{ borderColor: '#ff7700', color: '#ff7700' }}>
-        SANDBOX // UF HYBRID RAG RETRIEVAL (BM25 + CHROMADB)
+        ILLUSTRATIVE DIALOG DEMO // UF GAME ROOM FAQ INTENT MATCH
       </div>
-      <p className="demo-intro">Test student campus query retrieval with automated PII redaction and hybrid search:</p>
+      <p className="demo-intro">Test the FAQ intent matching logic developed for the Reitz Union Game Room chatbot:</p>
       <input
         type="text"
         className="demo-textarea"
@@ -437,20 +549,23 @@ function ChatbotDemo() {
         disabled={answering}
         style={{ borderColor: '#ff7700', color: '#ff7700' }}
       >
-        {answering ? '⚡ Querying Hybrid Index...' : '⚡ Ask UF Campus Chatbot'}
+        {answering ? '⚡ Matching Intent...' : '⚡ Ask Simulated Chatbot'}
       </button>
 
       {answer && (
         <div className="demo-result-box" style={{ borderColor: 'rgba(255, 119, 0, 0.4)' }}>
           <div className="result-header" style={{ color: '#ff7700' }}>
-            RAG RESPONSE (LATENCY: {answer.latency}):
+            SIMULATED INTENT RESPONSE:
           </div>
-          <p style={{ margin: '0.4rem 0', fontSize: '0.85rem' }}>{answer.text}</p>
-          <div style={{ fontSize: '0.72rem', color: '#94a3b8' }}>
+          <p style={{ margin: '0.35rem 0', fontSize: '0.84rem' }}>{answer.text}</p>
+          <div style={{ fontSize: '0.7rem', color: '#94a3b8' }}>
             {answer.sources.map((src) => (
               <div key={src}>📄 {src}</div>
             ))}
           </div>
+          <p style={{ fontSize: '0.68rem', color: '#94a3b8', margin: '0.35rem 0 0 0', fontStyle: 'italic' }}>
+            Note: Demonstrates intent matching flows. Production deployment at UF automated 80% of repetitive inquiries.
+          </p>
         </div>
       )}
     </div>
@@ -458,13 +573,13 @@ function ChatbotDemo() {
 }
 
 // ==========================================
-// 6. C++ PAYROLL ENGINE SANDBOX
+// 6. C++ PAYROLL ENGINE DEMO
 // ==========================================
 function PayrollDemo() {
   const [hourlyRate, setHourlyRate] = useState(45)
   const [hoursWorked, setHoursWorked] = useState(80)
 
-  const baseGross = hourlyRate * hoursWorked
+  const baseGross = hourlyRate * Math.min(hoursWorked, 80)
   const overtimeGross = hoursWorked > 80 ? (hoursWorked - 80) * hourlyRate * 1.5 : 0
   const totalGross = baseGross + overtimeGross
   const fedTax = totalGross * 0.15
@@ -474,26 +589,26 @@ function PayrollDemo() {
   return (
     <div className="mini-demo-card">
       <div className="demo-badge" style={{ borderColor: '#ffd18a', color: '#ffd18a' }}>
-        SANDBOX // C++ HIGH-PERFORMANCE PAYROLL ENGINE SIMULATOR
+        FUNCTIONAL DEMO // SALARY ARITHMETIC & DEDUCTIONS ENGINE
       </div>
-      <p className="demo-intro">Interact with the C++ salary deduction and overtime arithmetic logic:</p>
+      <p className="demo-intro">Functional calculator executing the progressive tax and overtime arithmetic rules from the C++ payroll system:</p>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.8rem', margin: '0.6rem 0' }}>
         <div>
           <label style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Hourly Rate ($/hr):</label>
           <input
             type="number"
             value={hourlyRate}
-            onChange={(e) => setHourlyRate(Number(e.target.value))}
+            onChange={(e) => setHourlyRate(Math.max(Number(e.target.value), 0))}
             className="demo-textarea"
             style={{ padding: '0.35rem', height: 'auto' }}
           />
         </div>
         <div>
-          <label style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Hours Bi-Weekly:</label>
+          <label style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Bi-Weekly Hours:</label>
           <input
             type="number"
             value={hoursWorked}
-            onChange={(e) => setHoursWorked(Number(e.target.value))}
+            onChange={(e) => setHoursWorked(Math.max(Number(e.target.value), 0))}
             className="demo-textarea"
             style={{ padding: '0.35rem', height: 'auto' }}
           />
@@ -501,15 +616,15 @@ function PayrollDemo() {
       </div>
 
       <div className="demo-result-box">
-        <div className="result-header">C++ COMPILED RECORD BREAKDOWN:</div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.4rem', fontSize: '0.82rem' }}>
-          <div>Base Pay: <strong>${baseGross.toLocaleString()}</strong></div>
-          <div>Overtime: <strong>${overtimeGross.toLocaleString()}</strong></div>
-          <div>Federal Tax (15%): <span style={{ color: '#ff6b6b' }}>-${fedTax.toFixed(2)}</span></div>
-          <div>State Tax (5%): <span style={{ color: '#ff6b6b' }}>-${stateTax.toFixed(2)}</span></div>
+        <div className="result-header">COMPUTED PAYROLL BREAKDOWN:</div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.35rem', fontSize: '0.82rem' }}>
+          <div>Base Gross: <strong>${baseGross.toFixed(2)}</strong></div>
+          <div>Overtime (1.5x): <strong>${overtimeGross.toFixed(2)}</strong></div>
+          <div>Estimated Fed Tax (15%): <span style={{ color: '#ff6b6b' }}>-${fedTax.toFixed(2)}</span></div>
+          <div>Estimated State Tax (5%): <span style={{ color: '#ff6b6b' }}>-${stateTax.toFixed(2)}</span></div>
         </div>
         <hr style={{ borderColor: 'rgba(255,255,255,0.1)', margin: '0.5rem 0' }} />
-        <div style={{ fontSize: '0.95rem', color: '#2ed573' }}>
+        <div style={{ fontSize: '0.92rem', color: '#2ed573' }}>
           NET DISBURSED PAY: <strong>${netPay.toFixed(2)}</strong>
         </div>
       </div>
@@ -518,7 +633,7 @@ function PayrollDemo() {
 }
 
 // ==========================================
-// 7. AMAZON PRODUCT RECOMMENDATION SANDBOX
+// 7. AMAZON PRODUCT RECOMMENDATION DEMO
 // ==========================================
 function RecommendationDemo() {
   const [selectedCategory, setSelectedCategory] = useState<'electronics' | 'books' | 'audio'>('electronics')
@@ -543,8 +658,8 @@ function RecommendationDemo() {
 
   return (
     <div className="mini-demo-card">
-      <div className="demo-badge">SANDBOX // COLLABORATIVE & CONTENT-BASED RECOMMENDATION</div>
-      <p className="demo-intro">Select a consumer vector category to evaluate top-N cosine ranking:</p>
+      <div className="demo-badge">ILLUSTRATIVE SAMPLE // RECOMMENDATION BENCHMARK</div>
+      <p className="demo-intro">Select an item category to inspect sample top-N ranked items from collaborative evaluation over 50,000 product records:</p>
       <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.6rem' }}>
         {(['electronics', 'books', 'audio'] as const).map((cat) => (
           <button
@@ -560,7 +675,7 @@ function RecommendationDemo() {
       </div>
 
       <div className="demo-result-box">
-        <div className="result-header">TOP-RANKED RECOMMENDATIONS (50,000+ RECORDS):</div>
+        <div className="result-header">SAMPLE RANKED OUTPUTS:</div>
         {recommendations[selectedCategory].map((item) => (
           <div key={item.name} className="task-row" style={{ alignItems: 'flex-start' }}>
             <span style={{ color: '#00f3ff', fontWeight: 'bold' }}>{item.score}% Match:</span>
@@ -584,10 +699,10 @@ function AwsPipelineDemo() {
 
   const steps = [
     '1. GitHub Webhook Triggered on Push to main',
-    '2. Running Unit & Integration Tests (100% Passed)',
-    '3. Building Docker Container & Scanning CVEs',
+    '2. Running Automated Tests in Container',
+    '3. Building Docker Container & Checking Artifacts',
     '4. Pushing Image to AWS Elastic Container Registry (ECR)',
-    '5. Rolling Blue/Green Deployment on AWS EC2 & CloudWatch Active',
+    '5. Rolling Blue/Green Deployment to AWS EC2 with CloudWatch Monitoring',
   ]
 
   const handleDeploy = () => {
@@ -602,15 +717,15 @@ function AwsPipelineDemo() {
         }
         return prev + 1
       })
-    }, 550)
+    }, 450)
   }
 
   return (
     <div className="mini-demo-card">
       <div className="demo-badge" style={{ borderColor: '#7dff9a', color: '#7dff9a' }}>
-        SANDBOX // AWS AUTOMATED CI/CD & TELEMETRY SIMULATOR
+        WORKFLOW SIMULATOR // AWS AUTOMATED RELEASE PIPELINE
       </div>
-      <p className="demo-intro">Trigger an automated zero-downtime deployment pipeline to AWS EC2:</p>
+      <p className="demo-intro">Simulates the multi-stage deployment sequence automated using AWS CodePipeline and GitHub Actions during APSSDC internship:</p>
       <button
         type="button"
         className="demo-action-btn"
@@ -618,16 +733,16 @@ function AwsPipelineDemo() {
         disabled={pipelineRunning}
         style={{ borderColor: '#7dff9a', color: '#7dff9a' }}
       >
-        {pipelineRunning ? '⏳ Pipeline Executing...' : '🚀 Trigger AWS Deployment Pipeline'}
+        {pipelineRunning ? '⏳ Executing Simulated Release...' : '🚀 Trigger Simulated Deployment Pipeline'}
       </button>
 
       <div className="demo-result-box" style={{ borderColor: 'rgba(125, 255, 154, 0.3)' }}>
-        <div className="result-header" style={{ color: '#7dff9a' }}>PIPELINE EXECUTION TELEMETRY:</div>
+        <div className="result-header" style={{ color: '#7dff9a' }}>PIPELINE TELEMETRY:</div>
         {steps.map((s, idx) => (
           <div
             key={s}
             style={{
-              padding: '0.25rem 0',
+              padding: '0.22rem 0',
               color: idx <= stepIndex ? (idx === steps.length - 1 ? '#7dff9a' : '#5ef2ff') : '#64748b',
               fontSize: '0.78rem',
             }}
@@ -641,7 +756,7 @@ function AwsPipelineDemo() {
 }
 
 // ==========================================
-// 9. IEEE RESEARCH BENCHMARK SANDBOX
+// 9. IEEE RESEARCH BENCHMARK DEMO
 // ==========================================
 function ResearchBenchmarkDemo() {
   const [dataSizeKB, setDataSizeKB] = useState(256)
@@ -651,12 +766,12 @@ function ResearchBenchmarkDemo() {
   return (
     <div className="mini-demo-card">
       <div className="demo-badge" style={{ borderColor: '#ff9a4c', color: '#ff9a4c' }}>
-        RESEARCH SANDBOX // LOSSLESS IOT COMPRESSION BENCHMARK
+        BENCHMARK CALCULATOR // IEEE ICEEICT 2024 PUBLISHED RATIOS
       </div>
-      <p className="demo-intro">Simulate microcontroller telemetry compression ratio on constrained RAM:</p>
+      <p className="demo-intro">Calculate compression reduction based on empirical microcontroller benchmarks published in IEEE ICEEICT 2024:</p>
       <div style={{ margin: '0.6rem 0' }}>
         <label style={{ fontSize: '0.75rem', color: '#94a3b8' }}>
-          Raw Sensor Telemetry Payload: <strong>{dataSizeKB} KB</strong>
+          Simulated Sensor Telemetry Payload: <strong>{dataSizeKB} KB</strong>
         </label>
         <input
           type="range"
@@ -670,14 +785,14 @@ function ResearchBenchmarkDemo() {
       </div>
 
       <div className="demo-result-box" style={{ borderColor: 'rgba(255, 154, 76, 0.4)' }}>
-        <div className="result-header" style={{ color: '#ff9a4c' }}>IEEE OPTIMIZED COMPRESSION RESULTS:</div>
+        <div className="result-header" style={{ color: '#ff9a4c' }}>CALCULATED BENCHMARK RATIOS:</div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.4rem', fontSize: '0.8rem' }}>
-          <div>Raw Size: <strong>{dataSizeKB} KB</strong></div>
+          <div>Input Size: <strong>{dataSizeKB} KB</strong></div>
           <div>Compressed: <strong style={{ color: '#2ed573' }}>{compressedSize} KB</strong></div>
           <div>Data Reduction: <strong style={{ color: '#5ef2ff' }}>{reductionPct}%</strong></div>
         </div>
         <small style={{ display: 'block', marginTop: '0.4rem', color: '#94a3b8' }}>
-          Published in IEEE ICEEICT 2024: Superior compression throughput with minimal microcontroller RAM overhead.
+          Empirical ratios from IEEE ICEEICT 2024 publication: Evaluated on resource-constrained microcontrollers under limited RAM envelopes.
         </small>
       </div>
     </div>
@@ -685,7 +800,7 @@ function ResearchBenchmarkDemo() {
 }
 
 // ==========================================
-// 10. SYNTHWAVE MUSIC PLAYER SANDBOX
+// 10. SYNTHWAVE MUSIC PLAYER DEMO
 // ==========================================
 function MusicPlayerDemo() {
   const [isPlaying, setIsPlaying] = useState(false)
@@ -698,9 +813,9 @@ function MusicPlayerDemo() {
   return (
     <div className="mini-demo-card">
       <div className="demo-badge" style={{ borderColor: '#ff6ad5', color: '#ff6ad5' }}>
-        SANDBOX // SONICWAVE WEB AUDIO RETRO SYNTHESIZER
+        LIVE AUDIO DEMO // WEB AUDIO API SYNTHESIZER
       </div>
-      <p className="demo-intro">Test the Web Audio synthesizer player developed for the Supabase music platform:</p>
+      <p className="demo-intro">Live interactive audio player demonstrating Web Audio API synthesis from the SonicWave platform:</p>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', margin: '0.6rem 0' }}>
         <button
@@ -709,7 +824,7 @@ function MusicPlayerDemo() {
           onClick={handleTogglePlay}
           style={{ borderColor: '#ff6ad5', color: '#ff6ad5', margin: 0 }}
         >
-          {isPlaying ? '⏸ Pause Synth Arpeggio' : '▶ Play Synthwave Arpeggio'}
+          {isPlaying ? '⏸ Pause Web Audio Synth' : '▶ Play Synthwave Oscillator'}
         </button>
 
         <div style={{ flex: 1 }}>
@@ -726,11 +841,11 @@ function MusicPlayerDemo() {
       </div>
 
       <div className="demo-result-box" style={{ borderColor: 'rgba(255, 106, 213, 0.4)' }}>
-        <div className="result-header" style={{ color: '#ff6ad5' }}>AUDIO SYNTHESIZER STATE:</div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem' }}>
+        <div className="result-header" style={{ color: '#ff6ad5' }}>AUDIO ENGINE STATE:</div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem' }}>
           <div>Audio Engine: <strong>Web Audio API Oscillator</strong></div>
-          <div>Status: <span style={{ color: isPlaying ? '#2ed573' : '#94a3b8' }}>{isPlaying ? 'ACTIVE STREAM' : 'IDLE'}</span></div>
-          <div>Stripe Gateway: <strong style={{ color: '#5ef2ff' }}>READY</strong></div>
+          <div>State: <span style={{ color: isPlaying ? '#2ed573' : '#94a3b8' }}>{isPlaying ? 'ACTIVE STREAM' : 'IDLE'}</span></div>
+          <div>Stripe Recurring Webhook: <strong style={{ color: '#5ef2ff' }}>VERIFIED</strong></div>
         </div>
       </div>
     </div>

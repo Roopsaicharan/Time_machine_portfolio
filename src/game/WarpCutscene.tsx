@@ -11,7 +11,17 @@ export function WarpCutscene({ targetEra, onComplete }: WarpCutsceneProps) {
   const [speed, setSpeed] = useState<number>(0)
   const [displayedYear, setDisplayedYear] = useState<string>('2027')
   const [stage, setStage] = useState<'charging' | 'hyperspace' | 'flash' | 'arrival'>('charging')
-  const [reducedMotion, setReducedMotion] = useState<boolean>(false)
+  const [reducedMotion, setReducedMotion] = useState<boolean>(() => {
+    return typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  })
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const handleChange = (e: MediaQueryListEvent) => setReducedMotion(e.matches)
+    mediaQuery.addEventListener('change', handleChange)
+    return () => mediaQuery.removeEventListener('change', handleChange)
+  }, [])
 
   // Listen for ESC key to instantly skip warp
   useEffect(() => {

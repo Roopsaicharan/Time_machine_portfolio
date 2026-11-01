@@ -2,24 +2,26 @@ export const traveler = {
   name: 'Roop Sai Charan Kothamasu',
   callsign: 'CHRONOS-01',
   role: 'Software Engineer | AI/ML Researcher | Full-Stack Developer',
-  tagline: 'Bridging full-stack artistry, AI agent architectures, and distributed systems across time.',
-  bio: `Master's-level Computer Science student at the University of Florida specializing in AI systems, front-end engineering, and high-performance software. Passionate about building robust, user-centric systems spanning generative AI agents, retrieval-augmented generation (RAG), and data-intensive distributed platforms.
+  tagline: 'Bridging full-stack software engineering, AI agent architectures, and distributed systems across time.',
+  bio: `Master's student in Computer Science at the University of Florida specializing in AI systems, data-intensive pipelines, and software engineering. Experienced in building production-ready systems spanning large-scale GIS data processing (1.2M+ records with McTrans), retrieval-augmented generation (RAG), autonomous vehicle physics-informed models, and full-stack web platforms.
 
-Experienced across TypeScript, React, Next.js, Python, Three.js, Go, C++, and cloud infrastructure. Every milestone is a destination in time—step into the Doraemon Time Machine to explore them.`,
+Proficient across Python, Go, TypeScript, JavaScript, C++, Java, React, Next.js, Three.js, SQL, AWS, and Docker. Two peer-reviewed IEEE conference publications in data compression and network security. Every era in Chronos represents a genuine milestone in engineering—step into the Doraemon Time Machine to explore them.`,
   location: 'Gainesville, FL (University of Florida) • Andhra Pradesh, India',
   phone: '+1 (352) 721-6208',
   email: 'roopsai2003@gmail.com',
   educationSummary: "Master's in Computer Science — University of Florida (Graduating May 2027)",
   lookingFor:
     'Seeking 2027 new-graduate Software Engineering, AI/ML, and Full-Stack Developer opportunities.',
+  resumePdfUrl: '/Roop_Sai_Charan_Kothamasu_Resume.pdf',
 }
 
 export const links = {
   email: 'roopsai2003@gmail.com',
   github: 'https://github.com/Roopsaicharan',
-  linkedin: 'https://www.linkedin.com/in/roopsaicharan/',
+  linkedin: 'https://www.linkedin.com/in/roop-sai-charan-kothamasu-85062b24b/',
   phone: '+13527216208',
   resume: '#resume-modal',
+  resumePdf: '/Roop_Sai_Charan_Kothamasu_Resume.pdf',
 }
 
 export const education = [
@@ -29,34 +31,38 @@ export const education = [
     years: 'Aug 2025 – May 2027',
     gpa: 'Graduate Studies',
     notes:
-      'Specializing in Artificial Intelligence, Advanced Distributed Systems, Full-Stack Architecture, and Scalable Cloud Computing. Active contributor to McTrans transportation research.',
+      'Focusing on Large-Scale Data Systems, Artificial Intelligence, and Systems Architecture. Software Engineer on the McTrans TRACER project; Research Assistant in Agentic AI for Chip Design.',
   },
   {
     place: 'SRM University, Andhra Pradesh',
     program: 'B.Tech in Computer Science (AIML Specialization)',
     years: 'Mar 2021 – Mar 2025',
-    gpa: 'CGPA 7.9/10',
+    gpa: 'CGPA 7.9 / 10',
     notes:
-      'Graduated with distinction in AIML. Published two peer-reviewed IEEE research papers on IoT compression and explainable AI intrusion detection; filed an international patent for decentralized patient records.',
+      'Graduated with AIML specialization. Co-authored 2 published IEEE research papers (ICEEICT 2024 on IoT compression; ICAECT 2025 on explainable AI intrusion detection). Conducted blockchain patient record research.',
   },
 ]
 
 export const skills = [
   {
     forge: 'Languages',
-    alloys: ['TypeScript', 'JavaScript (ES6+)', 'Python', 'Go', 'C++', 'Java', 'SQL (PostgreSQL/MySQL)', 'C', 'Solidity'],
+    alloys: ['Python', 'Java', 'C++', 'SQL (PostgreSQL, MySQL, SQLite)', 'Go', 'JavaScript (ES6+)', 'TypeScript', 'C', 'Solidity'],
   },
   {
     forge: 'Front-End & Creative Web',
-    alloys: ['React.js', 'Next.js', 'Three.js / WebGL', 'Tailwind CSS', 'HTML5 & CSS3', 'Framer Motion', 'Web Audio API', 'Responsive UI/UX'],
+    alloys: ['React.js', 'Next.js', 'Three.js / WebGL', 'HTML5 & CSS3', 'Tailwind CSS', 'Framer Motion', 'Web Audio API', 'Responsive UI/UX'],
   },
   {
-    forge: 'AI, ML & Data Systems',
-    alloys: ['Hybrid RAG (BM25 + Vector)', 'LangChain / Agents', 'ChromaDB', 'Gemini 1.5 Flash', 'Llama-3', 'PyTorch / TensorFlow', 'GIS & LRS Systems', 'NumPy & Pandas'],
+    forge: 'Backend, Systems & Data',
+    alloys: ['REST APIs', 'Node.js', 'Express.js', 'Distributed Systems', 'Large-Scale Data Processing (ETL)', 'Linear Referencing Systems (LRS)', 'Chord / Gossip Protocols', 'Database Internals'],
   },
   {
-    forge: 'Cloud, Systems & DevOps',
-    alloys: ['AWS (EC2, CloudWatch, S3)', 'Docker & Containers', 'CI/CD Automation', 'RESTful APIs', 'Linux / Unix', 'Git & GitHub', 'Agile / Scrum'],
+    forge: 'AI, ML & Research',
+    alloys: ['LLMs & AI Agents', 'Hybrid RAG (BM25 + ChromaDB)', 'PyTorch', 'Physics-Informed Neural Models (Mamba)', 'Scikit-learn', 'Pandas & NumPy', 'Explainable AI (SHAP)'],
+  },
+  {
+    forge: 'Cloud & DevOps Tooling',
+    alloys: ['AWS (EC2, S3, CloudWatch)', 'Docker', 'CI/CD Pipelines (GitHub Actions)', 'Git & GitHub', 'Linux / Unix', 'Agile / Scrum'],
   },
 ]
 
@@ -76,6 +82,8 @@ export interface ProjectData {
   impact: string
   href: string
   paperUrl?: string
+  isPrivate?: boolean
+  repoLabel?: string
   accent: string
 }
 
@@ -83,141 +91,170 @@ export const projects: ProjectData[] = [
   {
     id: 'tracer',
     codename: 'MISSION-TRACER',
-    title: 'TRACER: Intelligent Freeway Segmentation & LRS Processing',
+    title: 'TRACER: Large-Scale Freeway Segmentation & LRS Processing',
     category: 'Research & Data',
-    year: '2025–2026',
+    year: '2026 – Present',
     eraId: 'library',
-    tags: ['Python', 'GIS / LRS', 'Highway Capacity Manual', 'Data Cleaning', 'ETL', 'McTrans UF'],
+    tags: ['Python', 'GIS / LRS', 'Highway Capacity Manual', 'ETL', 'Data Governance', 'McTrans UF'],
     summary:
-      'Multidisciplinary University of Florida engineering project sponsored by McTrans. Engineered automated data cleaning pipelines across 1.2M raw roadway records using Linear Referencing Systems (LRS), Highway Capacity Manual (HCM) rules, and event detection to generate HCS-compliant freeway segment datasets.',
+      'Engineered an automated Python data pipeline for the McTrans-sponsored TRACER project at the University of Florida. Ingests 1.2M+ state DOT Linear Referencing System (LRS) records, resolves overlapping spans, and produces 2,493 clean freeway segments across 71 routes and 4,599 corridor-miles, reducing raw data volume by 99.8% with complete provenance tracking.',
     problem:
-      'Raw transportation telemetry across 1.2M+ roadway records contains spatial noise, missing milepost coordinates, and misaligned event boundaries that previously required weeks of manual validation.',
+      'State DOT roadway inventory data contains overlapping spans, spatial discontinuities, and inconsistent bidirectional AADT attribution across 371 county corridors that previously required weeks of manual validation before use in Highway Capacity Software (HCS).',
     role:
-      'Lead Automation Engineer on data cleaning pipelines, coordinate normalization, and HCM rule-based segmentation algorithm.',
+      'Software Engineer, Data Processing Backend. Developed the overlap-flattening engine, AADT propagation algorithms, and Highway Capacity Manual (HCM 7th Edition) segment classification routines.',
     architecture:
-      'Python ETL engine parsing shapefiles and GIS mileposts, applying boundary clustering, event detection, and generating HCS-compatible structured CSV exports.',
+      'Distributed Python ETL pipeline parsing multi-state shapefiles (NC, FL), executing segment classification (Basic, Merge, Diverge, Overlap, Weave), and generating validated 72-column McTrans HCS staging CSVs.',
     challenges:
-      'Standardizing heterogeneous county-level shapefiles and eliminating segment fragmentation around complex freeway on-ramps and weave sections.',
+      'Handling heterogeneous state-level data schemas and eliminating segment fragmentation around complex multi-lane freeway interchanges while maintaining strict 100% speed and 99.97% lane concordance.',
     impact:
-      'Automated processing of 1.2M roadway records, slashing segmentation turnaround from weeks to minutes while ensuring 100% HCM rule compliance.',
+      'Reduced raw data volume by 99.8% across 4,599 corridor-miles; achieved 96.08% spatial segmentation accuracy validated against 252 ground-truth segments on I-26; cut integration turnaround from days to under 1 hour.',
     href: 'https://github.com/Roopsaicharan',
+    isPrivate: true,
+    repoLabel: 'Institutional Sponsor: McTrans Center (UF)',
     accent: '#ff7700',
   },
   {
     id: 'chip-design',
     codename: 'MISSION-SILICON',
-    title: 'Agentic AI for Chip Design & VLSI Knowledge Retrieval',
+    title: 'Agentic AI Orchestration Platform for Chip Design',
     category: 'AI & Systems',
-    year: '2025–2026',
+    year: '2026 – Present',
     eraId: 'foundry',
-    tags: ['RAG', 'Agentic AI', 'VLSI Textbooks', 'LaTeX Parsing', 'Knowledge Retrieval', 'Semiconductors'],
+    tags: ['RAG', 'Agentic AI', 'VLSI Textbooks', 'EDA Tooling', 'LaTeX Validation', 'Semiconductors'],
     summary:
-      'Domain-specific Agentic RAG research system designed for semiconductor VLSI design. Engineered specialized technical document ingestion preserving complex mathematical expressions, circuit schematics, and hierarchical hardware concepts for high-accuracy engineering query answering.',
+      'Research Assistant in the University of Florida Electrical & Computer Engineering department developing an agentic AI platform using LLMs to assist semiconductor engineers with technical queries and coordinate workflows across Electronic Design Automation (EDA) tools.',
     problem:
-      'Standard LLM embeddings destroy mathematical formulas and hierarchical schematic relationships in dense VLSI literature, causing severe hallucinations in hardware design queries.',
+      'Semiconductor documentation and VLSI textbooks contain dense mathematical equations and hierarchical schematic relationships that standard document extractors corrupt, degrading retrieval accuracy for hardware engineers.',
     role:
-      'Research Developer designing the document chunking schema, LaTeX formula preservation layer, and multi-stage verification agents.',
+      'Research Assistant. Building the domain-specific Retrieval-Augmented Generation (RAG) pipeline to ingest, clean, and structure VLSI literature; implemented preprocessing and data validation scripts repairing extracted formulas.',
     architecture:
-      'Custom PDF parser isolating formula tokens, multi-vector indexing with ChromaDB, and multi-agent cross-referencing between circuit theory and verification rules.',
+      'Specialized document ingestion pipeline with formula token preservation, multi-vector embeddings, and agentic query orchestration coordinating across EDA documentation and verification rules.',
     challenges:
-      'Preserving mathematical equations and sub-circuit ASCII diagrams during tokenization without exceeding token window budgets.',
+      'Accurately parsing and restoring complex multi-line LaTeX formulas and semiconductor parameter tables without token explosion or schematic corruption.',
     impact:
-      'Achieved zero-loss mathematical symbol retrieval on VLSI textbook benchmarks and dramatically reduced hardware concept hallucination rates.',
+      'Established reproducible engineering tooling standards for semiconductor document chunking, enabling governed, high-accuracy knowledge retrieval across research teams.',
     href: 'https://github.com/Roopsaicharan',
+    isPrivate: true,
+    repoLabel: 'UF ECE Research Appointment',
     accent: '#ffd18a',
   },
   {
     id: 'world-models',
     codename: 'MISSION-MAMBA',
-    title: 'Physics-Informed World Models for Autonomous Systems',
+    title: 'Physics-Informed Mamba World Models for Autonomous Systems',
     category: 'AI & Systems',
-    year: '2025–2026',
+    year: '2026',
     eraId: 'horizon',
-    tags: ['Mamba Architecture', 'Physics-Informed ML', 'State-Space Models', 'Autonomous Vehicles', 'PyTorch'],
+    tags: ['Mamba Architecture', 'Physics-Informed ML', 'PyTorch', 'Autonomous Vehicles', 'State-Space Models'],
     summary:
-      'Investigated sequential physics-informed machine learning utilizing state-space Mamba models for autonomous vehicle trajectory forecasting. Incorporates dynamic vehicular physics constraints into neural state transitions, evaluated using Mean Squared Error (MSE) metrics on multi-sensor trajectory datasets.',
+      'Independent research advised by Dr. Ivan Ruchikin at the University of Florida. Developed a physics-informed Mamba state-space model for autonomous vehicle trajectory forecasting, trained on 8,000+ driving episodes (6.4M+ time-step samples) in PyTorch.',
     problem:
-      'Conventional Transformer world models suffer quadratic complexity with long sequence lengths and frequently produce physically infeasible vehicle trajectories during sudden braking or evasive maneuvers.',
+      'Conventional Transformer and LSTM trajectory predictors scale poorly over long horizons and frequently generate kinematically impossible vehicle paths (violating maximum lateral acceleration and turning radius limits).',
     role:
-      'Research Investigator implementing Mamba state-space layers and integrating kinematic bicycle physics loss functions.',
+      'Independent Student Researcher. Designed the Mamba state-space model, integrated physical constraints as differentiable loss penalties, and conducted 15+ ablation studies across sequence lengths from 1s to 10s.',
     architecture:
-      'Selective state-space (Mamba) temporal backbone coupled with physics regularization loss enforcing acceleration and turning-radius constraints.',
+      'Selective state-space (Mamba) neural backbone combined with kinematic bicycle model, energy conservation, and jerk limits incorporated as differentiable penalty terms during training.',
     challenges:
-      'Balancing continuous physical constraint gradients with discrete trajectory waypoint tokens without gradient explosion.',
+      'Balancing continuous physical loss penalty gradients with neural prediction loss to prevent gradient divergence during aggressive evasive maneuvers.',
     impact:
-      'Reduced trajectory prediction MSE by 22% compared to baseline RNNs while guaranteeing kinematic feasibility across all predicted paths.',
+      'Achieved 23% lower MSE vs. vanilla Mamba and 31% lower MSE vs. LSTM on a 5-second forecast horizon; reduced physically implausible predictions by 47% while maintaining real-time inference under 12ms per trajectory.',
     href: 'https://github.com/Roopsaicharan',
+    isPrivate: true,
+    repoLabel: 'UF Autonomous Vehicle Research Lab',
     accent: '#5ef2ff',
   },
   {
     id: 'meetmint',
     codename: 'MISSION-MINT',
-    title: 'MeetMint: AI-Powered Productivity Dashboard',
+    title: 'MeetMint: AI-Powered Meeting Productivity Platform',
     category: 'AI & Systems',
-    year: '2025',
+    year: '2026',
     eraId: 'horizon',
-    tags: ['Go', 'React', 'Gemini 1.5 Flash', 'Local RAG', 'SQLite', 'Framer Motion'],
+    tags: ['Go', 'React', 'Gemini API', 'SQLite RAG', 'REST APIs', 'Framer Motion'],
     summary:
-      'Architected a full-stack AI dashboard using Go and React to transform meeting audio into structured project metadata, leveraging Gemini 1.5 Flash for low-latency transcription and task extraction. Engineered a local RAG pipeline with SQLite embeddings and a sleek Glassmorphism UI with 35+ automated tests.',
+      'Customer-facing meeting assistant with 8 Go REST API endpoints for audio summarization, action-item extraction, searchable meeting records, and embedding-based RAG question answering with sub-2s retrieval latency.',
     problem:
-      'Engineering teams spend hours manually compiling action items, assignees, and deadlines from unstructured meeting discussions.',
+      'Teams lose hours per sprint manually transcribing meeting audio, extracting follow-up assignees, and searching through historical discussion notes.',
     role:
-      'Full-Stack & AI Systems Architect designing the Go REST backend, Gemini API integration, local RAG vector storage, and interactive React UI.',
+      'Sole Architect & Full-Stack Developer. Engineered the Go backend services, Gemini API vector embedding pipeline, SQLite persistence layer, and responsive React frontend.',
     architecture:
-      'Go backend orchestrating Gemini 1.5 Flash streaming APIs, SQLite vector indexing for local meeting history, and React front-end with Framer Motion animations.',
+      'Go REST API service executing audio chunking, indexing transcripts into a SQLite vector store with cosine similarity ranking, and a React UI with 35+ automated unit and integration tests (92% code coverage).',
     challenges:
-      'Achieving sub-second response times for audio transcription chunking while extracting strict JSON schemas with 100% validation reliability.',
+      'Designing concurrent request handling capable of serving 50+ simultaneous users while keeping p95 API response latency under 300ms.',
     impact:
-      'Delivered <250ms API processing latency, 35+ automated unit/integration tests, and automated extraction of action items with 94% accuracy.',
+      'Deployed application with 92% code coverage, p95 latency under 300ms, and verified semantic retrieval across 500+ meeting records.',
     href: 'https://github.com/Roopsaicharan/MeetMint',
     accent: '#5ef2ff',
   },
   {
     id: 'chatbot',
     codename: 'MISSION-GATOR',
-    title: 'AI-Powered Game Room Chatbot (UF Campus)',
+    title: 'University of Florida Game Room AI Chatbot',
     category: 'AI & Systems',
-    year: '2024',
+    year: '2026',
     eraId: 'library',
-    tags: ['Node.js', 'Express', 'ChromaDB', 'Llama-3', 'BM25 Hybrid RAG', 'RBAC'],
+    tags: ['Node.js', 'Express', 'ChromaDB', 'Llama-3', 'Dialog Flows', 'Campus Services'],
     summary:
-      'Developed a full-stack chatbot for the University of Florida leveraging GPT-OSS and Llama-3 APIs. Engineered a custom hybrid RAG pipeline combining self-hosted ChromaDB vector store and BM25 keyword index with strict RBAC, automated PII redaction, and regex output guardrails.',
+      'Built an end-to-end customer-facing chatbot for the UF Reitz Union Game Room handling 50+ FAQ intents to answer visitor questions, explain Game Room reservation policies, and guide employees through common technical troubleshooting.',
     problem:
-      'Student queries regarding campus gaming equipment, tournament schedules, and policy rules were scattered across static PDFs and emails, creating high staff support overhead.',
+      'Front-desk staff spent excessive hours answering recurring questions regarding console equipment, tournament schedules, and reservation policies.',
     role:
-      'Full-Stack AI Developer building the Node.js/Express service, embedding pipeline, and interactive web chat interface.',
+      'Student Assistant (Chatbot Development). Designed the structured dialog flows, backend Node.js services, and knowledge base integration.',
     architecture:
-      'Hybrid RAG architecture merging BM25 sparse keyword search and ChromaDB dense cosine vector retrieval with reciprocal rank fusion (RRF) and Llama-3 synthesis.',
+      'Node.js and Express backend service with ChromaDB vector store, keyword dialog matching, and automated FAQ responses.',
     challenges:
-      'Ensuring strict student PII redaction and preventing prompt injection while maintaining natural conversational flow.',
+      'Ensuring reliable accuracy for equipment policy questions without hallucinating rules or pricing.',
     impact:
-      'Handled hundreds of student inquiries with 92% first-contact resolution and sub-800ms query latency.',
+      'Automated 80% of repetitive staff inquiries regarding equipment troubleshooting and reservation rules, reducing average inquiry resolution time by 3x.',
     href: 'https://github.com/Roopsaicharan/Game_room_chatbot',
     accent: '#ff7700',
   },
   {
     id: 'research-papers',
     codename: 'MISSION-RESEARCH',
-    title: 'IEEE Research: IoT Compression & Network XAI',
+    title: 'Peer-Reviewed IEEE Research: IoT Compression & Network Security',
     category: 'Research & Data',
-    year: '2024–2025',
+    year: '2024 – 2025',
     eraId: 'research',
-    tags: ['IoT Compression', 'Explainable AI', 'SHAP', 'Cybersecurity', 'IEEE Xplore'],
+    tags: ['IEEE Xplore', 'IoT Compression', 'Explainable AI', 'SHAP', 'Network Intrusion'],
     summary:
-      'Published two peer-reviewed IEEE papers: lossless image compression algorithms on constrained microcontrollers (IEEE ICEEICT 2024), and hybrid explainable AI intrusion detection models for zero-day network attacks (IEEE ICAECT 2025).',
+      'Co-authored two peer-reviewed IEEE conference publications: (1) An Explainable AI Driven Hybrid Model for Enhanced Intrusion Detection in Network Security (IEEE ICAECT 2025), and (2) Analyzing Lossless Image Compression Techniques for IoT Devices (IEEE ICEEICT 2024).',
     problem:
-      'Constrained IoT microcontrollers cannot run heavy deep neural nets for compression, and critical security intrusion systems suffer from black-box explainability deficits.',
+      'Constrained IoT microcontrollers face strict memory bottlenecks when transmitting sensor data, while critical network intrusion detection systems require explainable decision boundaries to combat zero-day threats.',
     role:
-      'Primary Researcher and Lead Author responsible for algorithm benchmarking, statistical analysis, and manuscript preparation.',
+      'Co-author & Lead Algorithm Evaluator. Benchmarked compression algorithms on microcontroller memory constraints; implemented hybrid ML/XAI classification pipelines with SHAP value explanations.',
     architecture:
-      'Dual research framework: (1) Shannon entropy & Huffman-optimized differential coding for IoT; (2) Ensemble classifiers coupled with TreeSHAP and KernelSHAP explanation surfaces.',
+      'Lossless differential encoding optimized for low-RAM microcontrollers; ensemble classification framework combined with TreeSHAP feature importance analysis for intrusion detection.',
     challenges:
-      'Fitting lossless compression buffers within 64KB RAM budgets on microcontrollers and computing real-time SHAP values on high-throughput packet streams.',
+      'Optimizing compression buffers to operate within micro-RAM envelopes while maintaining lossless fidelity; reducing SHAP explanation computational overhead on high-throughput packet streams.',
     impact:
-      'Two published IEEE conference proceedings; achieved 42% average data reduction on sensor telemetry and 99.4% detection accuracy on standard intrusion datasets.',
+      'Two published IEEE conference proceedings indexed on IEEE Xplore with verified DOIs, providing empirical benchmarks for constrained IoT devices and explainable intrusion security.',
     href: 'https://doi.org/10.1109/ICEEICT61591.2024.10718516',
     paperUrl: 'https://doi.org/10.1109/ICEEICT61591.2024.10718516',
     accent: '#ff9a4c',
+  },
+  {
+    id: 'dosp-chord',
+    codename: 'MISSION-CHORD',
+    title: 'Distributed Systems: Chord Overlay, Gossip & Push-Sum',
+    category: 'AI & Systems',
+    year: '2026',
+    eraId: 'genesis',
+    tags: ['Gleam', 'Erlang/OTP', 'Distributed Systems', 'Chord Protocol', 'Gossip', 'Push-Sum'],
+    summary:
+      'Designed and implemented a distributed platform at scale featuring a Chord peer-to-peer overlay network with consistent hashing and finger tables supporting 10,000+ nodes, achieving O(log N) lookup with an average of 6.5 hops per query.',
+    problem:
+      'Maintaining decentralized data lookup and consensus across thousands of nodes without single points of failure requires robust routing and fault-tolerant actor supervision.',
+    role:
+      'Distributed Systems Developer. Implemented the Chord ring routing logic, finger tables, and concurrent Gossip/Push-Sum dissemination protocols.',
+    architecture:
+      'Erlang/OTP actor concurrency model implementing 10,000+ actors with fault-tolerant supervision trees, benchmarking ring, full-mesh, and 3D grid topologies.',
+    challenges:
+      'Ensuring network convergence under simulated message loss and node failure while sustaining high message throughput.',
+    impact:
+      'Demonstrated 100% network convergence within 15 rounds and benchmarked system throughput at 50,000+ messages/sec across 10,000+ actor nodes.',
+    href: 'https://github.com/Roopsaicharan/Dosp_project',
+    accent: '#ffd18a',
   },
   {
     id: 'aws-cloud',
@@ -226,147 +263,141 @@ export const projects: ProjectData[] = [
     category: 'Full-Stack & Web3',
     year: '2023',
     eraId: 'control',
-    tags: ['AWS EC2', 'CloudWatch', 'CI/CD', 'Docker', 'DevOps', 'Cost Optimization'],
+    tags: ['AWS EC2', 'CloudWatch', 'S3', 'CloudFront', 'CI/CD', 'GitHub Actions'],
     summary:
-      'Supported web application deployments on AWS EC2 and improved uptime by 35% with repeatable release practices. Automated CI/CD pipeline steps to slash manual deployment overhead by 30%, monitored metrics via CloudWatch, and reduced infrastructure costs by 20%.',
+      'AWS Cloud Computing Intern at APSSDC deploying 3 production web applications on AWS EC2 with auto-scaling groups, configuring CloudWatch alarms for CPU/memory thresholds, and automating CI/CD pipelines using AWS CodePipeline and GitHub Actions.',
     problem:
-      'Manual, error-prone deployment scripts caused frequent downtime during web service releases across state skill development programs.',
+      'Manual application deployments took 25 minutes per release and lacked automated health checks, causing intermittent portal downtime.',
     role:
-      'AWS Cloud Computing Intern configuring EC2 instances, security groups, automated deployment triggers, and CloudWatch alert thresholds.',
+      'AWS Cloud Computing Intern. Configured EC2 instances, security groups, auto-scaling policies, CloudWatch monitors, and automated build/deploy workflows.',
     architecture:
-      'GitHub Actions CI/CD deploying containerized Node.js services to AWS EC2 auto-scaling groups behind Application Load Balancers with CloudWatch synthetic monitoring.',
+      'Automated CI/CD pipelines deploying containerized services to AWS EC2 auto-scaling groups with S3 static asset hosting and CloudFront CDN distribution.',
     challenges:
-      'Minimizing state government cloud expenditures while maintaining 99.9% uptime during peak portal enrollment periods.',
+      'Minimizing cloud infrastructure overhead while maintaining 99.5% uptime during peak portal registration events.',
     impact:
-      'Achieved 35% improvement in application uptime, cut manual deployment overhead by 30%, and lowered monthly AWS spend by 20%.',
+      'Reduced release deployment time from 25 minutes to under 4 minutes; achieved 99.5% uptime; cut static asset delivery latency by 40% via CloudFront CDN.',
     href: 'https://github.com/Roopsaicharan',
+    isPrivate: true,
+    repoLabel: 'APSSDC Internship Work',
     accent: '#7dff9a',
   },
   {
     id: 'music',
     codename: 'MISSION-SONIC',
-    title: 'SonicWave: Music Platform with Stripe & Supabase',
+    title: 'SonicWave: Full-Stack Music Platform with Stripe & Supabase',
     category: 'Full-Stack & Web3',
     year: '2023',
     eraId: 'neon',
-    tags: ['Next.js', 'React', 'Tailwind', 'Stripe Payments', 'Supabase PostgreSQL'],
+    tags: ['Next.js', 'React', 'Stripe', 'Supabase', 'PostgreSQL', 'Web Audio API'],
     summary:
-      'Developed a subscription-based music streaming & purchase platform with responsive UI, secure Stripe checkouts, user-friendly error boundaries, and Supabase database optimization reducing load times by 25%.',
+      'Customer-facing subscription music platform with Stripe payment integration for recurring billing, PostgreSQL-backed catalog of 1,000+ tracks, full-text search with sub-200ms query response, and real-time audio playback.',
     problem:
-      'Independent creators needed an affordable direct-to-listener audio store with instant payouts and seamless playback across devices.',
+      'Independent musicians needed an integrated storefront supporting recurring subscriptions, instant checkout webhooks, and fast mobile playback.',
     role:
-      'Sole Full-Stack Developer implementing client UI, Web Audio player, Stripe webhook listeners, and relational schema in Supabase.',
+      'Sole Full-Stack Developer. Implemented Next.js Server-Side Rendering (SSR), Supabase Auth with OAuth 2.0 (Google/GitHub), normalized 8-table relational PostgreSQL schema, and Stripe payment webhooks.',
     architecture:
-      'Next.js App Router front-end with Tailwind CSS, Supabase PostgreSQL with Row Level Security (RLS), Supabase Storage for audio CDN, and Stripe checkout session webhooks.',
+      'Next.js SSR application with Supabase PostgreSQL, Row-Level Security (RLS) policies, Stripe checkout session webhooks, and Web Audio API streaming.',
     challenges:
-      'Handling audio streaming buffering smoothly on low-bandwidth mobile networks while preventing unauthorized downloads of premium tracks.',
+      'Optimizing complex relational queries (users, subscriptions, playlists, tracks, likes) to keep average playlist-fetch latency under 200ms.',
     impact:
-      '25% reduction in page load latency via Next.js ISR, 100% webhook transaction integrity, and flawless cross-browser audio playback.',
+      'Reduced initial page load to under 1.2s via Next.js SSR; cut playlist query latency by 60% through database indexes; verified 100% payment webhook transaction integrity.',
     href: 'https://github.com/Roopsaicharan/Music-Bomb',
     accent: '#ff6ad5',
   },
   {
-    id: 'recs',
-    codename: 'MISSION-RECS',
-    title: 'Amazon Product Recommendation Engine',
-    category: 'Research & Data',
-    year: '2022',
-    eraId: 'foundry',
-    tags: ['Python', 'NumPy', 'TensorFlow', 'Collaborative Filtering', 'Evaluation Metrics'],
-    summary:
-      'Built a collaborative and content-based recommendation engine tested over 50,000+ real product records, boosting recommendation accuracy by 18% through structured evaluation and rigorous feature engineering.',
-    problem:
-      'Cold-start issues and extreme sparsity in large e-commerce catalog interaction matrices degrade top-N product recommendation relevance.',
-    role:
-      'Machine Learning Developer engineering similarity metrics, matrix factorization models, and validation benchmarks.',
-    architecture:
-      'Hybrid recommender pipeline combining singular value decomposition (SVD) matrix factorization with cosine similarity on TF-IDF metadata vectors.',
-    challenges:
-      'Optimizing sparse matrix computations to execute within reasonable RAM constraints on consumer workstations.',
-    impact:
-      'Boosted recommendation precision/recall metrics by 18% on a 50,000+ item dataset with sub-50ms ranking computation.',
-    href: 'https://github.com/Roopsaicharan',
-    accent: '#ffd18a',
-  },
-  {
-    id: 'payroll',
-    codename: 'MISSION-PAYROLL',
-    title: 'High-Performance C++ Enterprise Payroll Engine',
+    id: 'blockchain-health',
+    codename: 'MISSION-HEALTH',
+    title: 'Decentralized Patient Record Sharing System (SRM AP)',
     category: 'Full-Stack & Web3',
-    year: '2021',
+    year: '2024 – 2025',
     eraId: 'genesis',
-    tags: ['C++', 'OOP Architecture', 'Data Structures', 'CRUD', 'File I/O'],
+    tags: ['Solidity', 'Node.js', 'REST APIs', 'MongoDB', 'Smart Contracts', 'Ganache'],
     summary:
-      'Built a modular, object-oriented C++ system for enterprise payroll processing. Designed comprehensive edge-case handling and validation routines that reduced calculation runtimes by 40%.',
+      'Special Project Intern at SRM University AP developing a governed, decentralized patient-record sharing platform with 12 Node.js REST API endpoints and 3 Solidity smart contracts enforcing role-based access control (patient, doctor, admin).',
     problem:
-      'Legacy payroll calculation software suffered from memory leaks and unhandled tax bracket edge cases on large employee rosters.',
+      'Centralized electronic health records are vulnerable to single-point unauthorized access and lack tamper-proof audit trails for cross-hospital record sharing.',
     role:
-      'Systems Developer structuring class hierarchies, file persistence serialization, and tax deduction calculation modules.',
+      'Special Project Intern, Blockchain Research. Implemented Solidity smart contracts, Node.js REST APIs, and JWT authentication flows.',
     architecture:
-      'Clean C++ OOP design implementing encapsulation, polymorphism, custom exception hierarchies, and binary file serialization.',
+      'Hybrid blockchain architecture utilizing Solidity smart contracts on an Ethereum testnet for immutable permissions and access logs, combined with MongoDB for off-chain encrypted metadata.',
     challenges:
-      'Ensuring strict numerical precision and preventing floating-point rounding errors across complex tiered progressive tax calculations.',
+      'Optimizing smart-contract gas efficiency on Ethereum EVM without compromising fine-grained role-based permission checks.',
     impact:
-      'Achieved 40% reduction in calculation runtimes and 100% test coverage over edge-case bonus/tax scenarios.',
-    href: 'https://github.com/Roopsaicharan',
-    accent: '#d7c39a',
+      'Optimized smart-contract gas consumption by 18% through struct packing; verified zero unauthorized record access during integration testing across 500+ simulated transactions on Ganache.',
+    href: 'https://github.com/Roopsaicharan/Decentralized-Patient-Record-Management-System-',
+    accent: '#ffd18a',
   },
 ]
 
 export const experience = [
   {
     mission: 'LOG-MCTRANS-UF',
-    org: 'McTrans Center / University of Florida',
-    role: 'Graduate Research Developer — TRACER Project',
-    years: 'Aug 2025 – Present',
+    org: 'University of Florida — McTrans Center (IPPD Project)',
+    role: 'Software Engineer, Data Processing Backend (TRACER)',
+    years: '2026 – Present',
     briefing:
-      'Engineering automated roadway data validation and GIS Linear Referencing Systems (LRS) across 1.2M+ transportation records. Developing Python algorithms compliant with Highway Capacity Manual (HCM) standards to generate freeway segmentations for HCS software suite.',
+      'Engineered large-scale Python data pipelines ingesting 1.2M+ state DOT Linear Referencing System records across 71 routes and 4,599 corridor-miles (99.8% raw data reduction with full governance provenance). Implemented overlap-flattening and AADT propagation algorithms achieving 99.97% lane and 100% speed concordance against ground-truth benchmarks. Built distributed segmentation engine adhering to HCM 7th Edition standards exporting to 72-column McTrans HCS staging CSVs.',
   },
   {
-    mission: 'LOG-AWS-CLOUD',
+    mission: 'LOG-UF-ECE',
+    org: 'University of Florida — Electrical & Computer Engineering',
+    role: 'Research Assistant, Agentic AI for Chip Design',
+    years: '2026 – Present',
+    briefing:
+      'Developing an agentic AI orchestration platform using LLMs to assist semiconductor engineers with technical queries and coordinate workflows across EDA tools. Building domain-specific RAG pipelines to acquire, clean, and structure VLSI literature; implemented data validation scripts repairing extracted mathematical expressions and technical terminology.',
+  },
+  {
+    mission: 'LOG-UF-RESEARCH',
+    org: 'University of Florida (Advisor: Dr. Ivan Ruchikin)',
+    role: 'Autonomous Vehicle Systems Researcher',
+    years: '2026',
+    briefing:
+      'Developed a physics-informed Mamba state-space model for vehicle trajectory prediction, trained on 8,000+ driving episodes (6.4M+ time-step samples) in PyTorch. Achieved 23% lower MSE vs. vanilla Mamba on 5-second forecast horizon. Integrated kinematic bicycle physics loss penalties, reducing physically implausible predictions by 47% at <12ms inference.',
+  },
+  {
+    mission: 'LOG-UF-GAMEROOM',
+    org: 'University of Florida — Reitz Union Game Room',
+    role: 'Student Assistant (Chatbot Development)',
+    years: 'Apr 2026 – Oct 2026',
+    briefing:
+      'Built an end-to-end customer-facing chatbot handling 50+ FAQ intents to answer visitor questions, explain Game Room policies, and guide staff through technical issues. Automated 80% of repetitive inquiries, reducing average resolution time by 3x.',
+  },
+  {
+    mission: 'LOG-SRM-BLOCKCHAIN',
+    org: 'SRM University AP',
+    role: 'Special Project Intern, Blockchain Research',
+    years: 'Dec 2024 – Mar 2025',
+    briefing:
+      'Built 12 Node.js REST API endpoints and 3 Solidity smart contracts for governed decentralized patient-record sharing. Designed role-based access control across patient, doctor, and admin actors; optimized contract gas consumption by 18% and verified integrity across 500+ transactions on Ganache.',
+  },
+  {
+    mission: 'LOG-AWS-APSSDC',
     org: 'APSSDC (Andhra Pradesh State Skill Development Corp)',
     role: 'AWS Cloud Computing Intern',
     years: 'Jun 2023 – Aug 2023',
     briefing:
-      'Supported web application deployments on AWS EC2 and improved uptime by 35% with repeatable release practices. Automated CI/CD pipeline steps to slash manual deployment overhead by 30%, monitored metrics via CloudWatch, and reduced infrastructure costs by 20%.',
-  },
-  {
-    mission: 'LOG-RESEARCH-LAB',
-    org: 'SRM University AP Research Laboratory',
-    role: 'Research Intern — Machine Learning & Systems',
-    years: 'Jan 2022 – Mar 2022',
-    briefing:
-      'Built reproducible data preparation and evaluation pipelines for predictive modeling over 15K+ records. Improved prediction stability by ~20% through ensemble techniques, feature scaling, and automated validation tracking.',
+      'Deployed 3 production web applications on AWS EC2 with auto-scaling groups and CloudWatch monitoring (99.5% uptime). Automated CI/CD pipelines using AWS CodePipeline and GitHub Actions, cutting release cycles from 25 minutes to under 4 minutes. Configured S3 and CloudFront CDN, reducing page load latency by 40%.',
   },
 ]
 
 export const publications = [
   {
     id: 'PUB-01',
-    title: 'Analyzing Lossless Image Compression Techniques for IoT Devices',
-    conference: 'IEEE ICEEICT 2024',
-    doi: '10.1109/ICEEICT61591.2024.10718516',
-    url: 'https://doi.org/10.1109/ICEEICT61591.2024.10718516',
-    summary:
-      'Benchmarked and optimized lossless compression algorithms on constrained IoT microcontrollers, achieving superior compression ratios with minimal RAM consumption.',
-  },
-  {
-    id: 'PUB-02',
     title: 'An Explainable AI Driven Hybrid Model for Enhanced Intrusion Detection in Network Security',
     conference: 'IEEE ICAECT 2025',
     doi: '10.1109/ICaECT63952.2025.10958911',
     url: 'https://doi.org/10.1109/ICaECT63952.2025.10958911',
     summary:
-      'Designed a hybrid ML/XAI intrusion detection model combining deep learning classifiers with SHAP explanations for transparent, high-precision zero-day anomaly detection.',
+      'Designed a hybrid ML/XAI intrusion detection framework combining deep learning classifiers with TreeSHAP explanations for transparent, high-precision network anomaly detection on benchmark cybersecurity datasets.',
   },
   {
-    id: 'PUB-03',
-    title: 'Decentralized Patient Record Management System',
-    conference: 'International Patent Filed / IEEE Format',
-    doi: 'Patent Under Review (Decentralized Healthcare)',
-    url: 'https://github.com/Roopsaicharan',
+    id: 'PUB-02',
+    title: 'Analyzing Lossless Image Compression Techniques for IoT Devices',
+    conference: 'IEEE ICEEICT 2024',
+    doi: '10.1109/ICEEICT61591.2024.10718516',
+    url: 'https://doi.org/10.1109/ICEEICT61591.2024.10718516',
     summary:
-      'Decentralized immutable electronic health record (EHR) exchange using Ethereum smart contracts, IPFS, and verifiable credentials for tamper-proof patient privacy and audit trails.',
+      'Empirical benchmark and optimization of lossless compression algorithms on resource-constrained IoT microcontrollers, evaluating memory footprints, throughput, and compression ratios under constrained RAM budgets.',
   },
 ]
 
@@ -410,12 +441,12 @@ export const eras: EraDefinition[] = [
     shortYear: '2021',
     originYear: '2027',
     targetYear: '2021',
-    name: 'Ancient Valley: First Light',
-    subtitle: 'System Foundations & C++ Architecture',
-    tease: 'Where software engineering began: C++ High-Performance Payroll & Object-Oriented Architecture.',
+    name: 'Ancient Valley: Distributed Roots',
+    subtitle: 'Chord P2P, Gossip & C++ Foundations',
+    tease: 'Where systems began: Chord 10,000-node P2P overlay (Gleam/OTP) & Decentralized Patient Records.',
     section: 'Roots',
     color: '#ffd18a',
-    featuredProject: projects.find((p) => p.id === 'payroll')!,
+    featuredProject: projects.find((p) => p.id === 'dosp-chord')!,
     env: {
       skyTop: 0x141f31,
       skyBottom: 0xf5b041,
@@ -429,8 +460,8 @@ export const eras: EraDefinition[] = [
       architectureStyle: 'ancient',
     },
     cutscene: {
-      title: 'WARPING TO YEAR 2021: ANCIENT ROOTS',
-      subtext: 'COMPILING C++ OBJECT-ORIENTED KERNEL & BINARY SERIALIZATION MATRIX',
+      title: 'WARPING TO YEAR 2021: DISTRIBUTED ROOTS',
+      subtext: 'INITIALIZING CHORD P2P OVERLAY & ERLANG/OTP ACTOR SUPERVISION MESH',
       vortexColors: ['#ffb142', '#ff5252'],
       speedTarget: 88,
       soundDesc: 'Earthy golden temporal rumble',
@@ -438,19 +469,19 @@ export const eras: EraDefinition[] = [
   },
   {
     id: 'library',
-    year: '2025–2027 // GATOR CS',
+    year: '2026–2027 // GATOR CS',
     shortYear: 'UF-CS',
     originYear: '2021',
-    targetYear: '2025',
+    targetYear: '2026',
     name: 'The Great Gator Library & AI Lab',
     subtitle: 'University of Florida (MS CS) & TRACER',
-    tease: 'UF Gainesville research campus: TRACER Freeway Segmentation (McTrans) & AI Game Room Hybrid RAG Chatbot.',
+    tease: 'UF Gainesville campus: McTrans TRACER 1.2M record freeway segmentation & Reitz Union Chatbot.',
     section: 'Education',
     color: '#ff7700',
     featuredProject: projects.find((p) => p.id === 'tracer')!,
     env: {
       skyTop: 0x081e4b,
-      skyBottom: 0xeb6b1c, // UF Blue and Orange dusk
+      skyBottom: 0xeb6b1c,
       groundColor: 0x163828,
       pathColor: 0xcc7a00,
       treeTrunkColor: 0x3d2b1f,
@@ -461,22 +492,22 @@ export const eras: EraDefinition[] = [
       architectureStyle: 'campus',
     },
     cutscene: {
-      title: 'JUMPING TO 2025-2027: UNIVERSITY OF FLORIDA',
-      subtext: 'CONNECTING TO MCTRANS RESEARCH DATASET & UF HYBRID RAG VECTOR CLUSTER',
-      vortexColors: ['#0021A5', '#FA4616'], // UF Royal Blue and Orange
+      title: 'JUMPING TO 2026-2027: UNIVERSITY OF FLORIDA',
+      subtext: 'CONNECTING TO MCTRANS LRS PIPELINE & UF REITZ UNION CHATBOT DIALOG FLOWS',
+      vortexColors: ['#0021A5', '#FA4616'],
       speedTarget: 95,
       soundDesc: 'Gator temporal roar',
     },
   },
   {
     id: 'foundry',
-    year: '2022 // ML FORGE',
-    shortYear: '2022',
-    originYear: '2025',
-    targetYear: '2022',
+    year: '2026 // SILICON FORGE',
+    shortYear: 'VLSI',
+    originYear: '2026',
+    targetYear: '2026',
     name: 'Clockwork Data Foundry & Silicon Lab',
-    subtitle: 'Chip Design RAG & Amazon Recommendations',
-    tease: 'Autumn steampunk foundry: Agentic AI for Chip Design & Amazon Product Recommender over 50,000+ items.',
+    subtitle: 'Agentic AI for Chip Design (UF ECE)',
+    tease: 'Semiconductor engineering forge: Agentic RAG for VLSI textbooks with LaTeX equation preservation.',
     section: 'Foundry',
     color: '#ffd18a',
     featuredProject: projects.find((p) => p.id === 'chip-design')!,
@@ -493,8 +524,8 @@ export const eras: EraDefinition[] = [
       architectureStyle: 'industrial',
     },
     cutscene: {
-      title: 'WARPING TO YEAR 2022: BIG DATA & SILICON FORGE',
-      subtext: 'PARSING VLSI TEXTBOOK EQUATIONS & TRAINING TENSORFLOW MATRICES',
+      title: 'WARPING TO 2026: SEMICONDUCTOR SILICON FORGE',
+      subtext: 'PARSING VLSI TEXTBOOK EQUATIONS & COORDINATING EDA WORKFLOW AGENTS',
       vortexColors: ['#e67e22', '#d35400'],
       speedTarget: 88,
       soundDesc: 'Industrial clockwork engine chime',
@@ -504,11 +535,11 @@ export const eras: EraDefinition[] = [
     id: 'control',
     year: '1969 / 2023 // CLOUD',
     shortYear: '1969',
-    originYear: '2022',
+    originYear: '2026',
     targetYear: '1969',
     name: 'Apollo Mission Control & Cloud Telemetry',
-    subtitle: 'AWS Cloud & APSSDC DevOps Telemetry',
-    tease: 'Space-age launch telemetry & AWS Cloud Computing Intern (APSSDC) automated CI/CD pipelines.',
+    subtitle: 'AWS Cloud Infrastructure (APSSDC)',
+    tease: 'Space-age launch telemetry & AWS Cloud Computing Intern CI/CD automation cutting releases from 25m to <4m.',
     section: 'Telemetry',
     color: '#7dff9a',
     featuredProject: projects.find((p) => p.id === 'aws-cloud')!,
@@ -526,7 +557,7 @@ export const eras: EraDefinition[] = [
     },
     cutscene: {
       title: 'RETRO-TRAVERSAL TO 1969/2023: MISSION CONTROL',
-      subtext: 'BOOTING AWS CLOUDWATCH METRIC STREAMS & ORBITAL TELEMETRY TRANSPONDERS',
+      subtext: 'BOOTING AWS CLOUDWATCH METRIC STREAMS & EC2 AUTO-SCALING ALARMS',
       vortexColors: ['#2ed573', '#1e90ff'],
       speedTarget: 92,
       soundDesc: 'Apollo radio sweep and radar beep',
@@ -546,11 +577,11 @@ export const eras: EraDefinition[] = [
     featuredProject: projects.find((p) => p.id === 'music')!,
     env: {
       skyTop: 0x090014,
-      skyBottom: 0x7b1fa2, // vibrant neon synthwave twilight
+      skyBottom: 0x7b1fa2,
       groundColor: 0x100b21,
       pathColor: 0x00f3ff,
       treeTrunkColor: 0x221a42,
-      treeFoliageColor: 0xff007f, // glowing hot pink palms
+      treeFoliageColor: 0xff007f,
       fogDensity: 0.006,
       sunColor: 0xff007f,
       sunIntensity: 3.6,
@@ -571,14 +602,14 @@ export const eras: EraDefinition[] = [
     originYear: '1985',
     targetYear: '2024',
     name: 'Temporal Research Observatory',
-    subtitle: 'Peer-Reviewed IEEE Publications & Patents',
-    tease: 'High-altitude research observatory: Lossless IoT image compression, Explainable AI, and Decentralized EHR.',
+    subtitle: 'Peer-Reviewed IEEE Publications',
+    tease: 'High-altitude research observatory: Published IEEE papers in IoT image compression and explainable AI security.',
     section: 'Research',
     color: '#ff9a4c',
     featuredProject: projects.find((p) => p.id === 'research-papers')!,
     env: {
       skyTop: 0x06071a,
-      skyBottom: 0x16a085, // Aurora borealis emerald
+      skyBottom: 0x16a085,
       groundColor: 0x171f24,
       pathColor: 0x3498db,
       treeTrunkColor: 0x242b35,
@@ -590,7 +621,7 @@ export const eras: EraDefinition[] = [
     },
     cutscene: {
       title: 'WARPING TO 2024-2025: IEEE OBSERVATORY',
-      subtext: 'INDEXING PEER-REVIEWED CONFERENCE PROCEEDINGS (ICEEICT & ICAECT)',
+      subtext: 'INDEXING PEER-REVIEWED CONFERENCE PROCEEDINGS (ICEEICT 2024 & ICAECT 2025)',
       vortexColors: ['#48dbfb', '#ff9f43'],
       speedTarget: 90,
       soundDesc: 'Cosmic quantum resonator',
@@ -598,16 +629,16 @@ export const eras: EraDefinition[] = [
   },
   {
     id: 'horizon',
-    year: '2025+ // AI FRONTIER',
+    year: '2026+ // AI FRONTIER',
     shortYear: 'FUTURE',
     originYear: '2024',
     targetYear: '2026',
     name: 'Horizon Station: MeetMint & World Models',
-    subtitle: 'Gemini 1.5 Flash & Mamba Autonomous Physics',
-    tease: 'Futuristic biosphere: MeetMint AI Meeting Intelligence & Physics-Informed Mamba World Models.',
+    subtitle: 'MeetMint (Go/Gemini) & Physics-Informed Mamba',
+    tease: 'Futuristic biosphere: MeetMint AI Meeting Intelligence (<300ms p95) & Physics-Informed Mamba World Models (<12ms).',
     section: 'Future',
     color: '#5ef2ff',
-    featuredProject: projects.find((p) => p.id === 'meetmint')!,
+    featuredProject: projects.find((p) => p.id === 'world-models')!,
     env: {
       skyTop: 0x020517,
       skyBottom: 0x2e0854,
@@ -621,8 +652,8 @@ export const eras: EraDefinition[] = [
       architectureStyle: 'futuristic',
     },
     cutscene: {
-      title: 'LEAPING TO 2025+: HORIZON STATION',
-      subtext: 'ORCHESTRATING GEMINI 1.5 FLASH RAG & MAMBA STATE-SPACE TRAJECTORY MATRICES',
+      title: 'LEAPING TO 2026+: HORIZON STATION',
+      subtext: 'ORCHESTRATING MEETMINT GO/GEMINI AGENTS & MAMBA STATE-SPACE TRAJECTORY MATRICES',
       vortexColors: ['#4cc9f0', '#7209b7'],
       speedTarget: 108,
       soundDesc: 'Hyperspace singularity boom',

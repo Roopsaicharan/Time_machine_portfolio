@@ -134,12 +134,21 @@ export function CockpitVR({ onInitiateWarp, onOpenResume, onSwitchToProfessional
               </button>
             )}
 
+            <a
+              href={traveler.resumePdfUrl}
+              download="Roop_Sai_Charan_Kothamasu_Resume.pdf"
+              className="cinematic-outline-btn"
+              style={{ textDecoration: 'none' }}
+            >
+              ⬇ DOWNLOAD RESUME (PDF)
+            </a>
+
             <button
               type="button"
               className="cinematic-outline-btn"
               onClick={onOpenResume}
             >
-              📄 DOWNLOAD RESUME
+              👁️ PREVIEW RESUME
             </button>
 
             <a
@@ -366,8 +375,16 @@ export function CockpitVR({ onInitiateWarp, onOpenResume, onSwitchToProfessional
           </div>
 
           <div className="cockpit-footer-actions">
+            <a
+              href={traveler.resumePdfUrl}
+              download="Roop_Sai_Charan_Kothamasu_Resume.pdf"
+              className="cockpit-aux-btn"
+              style={{ textDecoration: 'none' }}
+            >
+              ⬇ RESUME (PDF)
+            </a>
             <button type="button" className="cockpit-aux-btn" onClick={onOpenResume}>
-              📄 RESUME
+              👁️ PREVIEW
             </button>
             {onSwitchToProfessional && (
               <button

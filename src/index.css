@@ -3542,3 +3542,35 @@ kbd {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* System Reduced Motion Accessibility Support (Priority 5) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .cutscene-shake-layer,
+  .arrival-flash,
+  .star-streaks,
+  .hyperspace-vortex,
+  .temporal-portal-ring,
+  .live-beacon,
+  .time-shield-field {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .arrival-flash {
+    display: none !important;
+  }
+
+  .hyperspace-vortex {
+    opacity: 0.35 !important;
+  }
+}

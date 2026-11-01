@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { type ProjectData } from '../data/content'
 import { ProjectMiniDemo } from './ProjectMiniDemo'
 
@@ -8,27 +8,44 @@ interface ProjectDetailModalProps {
 }
 
 export function ProjectDetailModal({ project, onClose }: ProjectDetailModalProps) {
+  const modalRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
     }
-    window.addEventListener('keydown', handleKeyDown)
+    if (project) {
+      window.addEventListener('keydown', handleKeyDown)
+      setTimeout(() => modalRef.current?.focus(), 50)
+    }
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [onClose])
+  }, [project, onClose])
 
   if (!project) return null
 
   return (
-    <div className="project-modal-backdrop" onClick={onClose} role="dialog" aria-modal="true">
-      <div className="project-modal-dialog" onClick={(e) => e.stopPropagation()}>
+    <div
+      className="project-modal-backdrop"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="project-modal-title"
+    >
+      <div
+        ref={modalRef}
+        tabIndex={-1}
+        className="project-modal-dialog"
+        onClick={(e) => e.stopPropagation()}
+        style={{ outline: 'none' }}
+      >
         <div className="project-modal-header" style={{ borderBottomColor: project.accent || 'var(--cyan)' }}>
           <div>
             <span className="project-modal-code" style={{ color: project.accent || 'var(--cyan)' }}>
               {project.codename} // REAL DATE: {project.year} // {project.category.toUpperCase()}
             </span>
-            <h2>{project.title}</h2>
+            <h2 id="project-modal-title">{project.title}</h2>
           </div>
-          <button type="button" className="close-btn" onClick={onClose} aria-label="Close dialog">
+          <button type="button" className="close-btn" onClick={onClose} aria-label="Close project modal">
             ✕
           </button>
         </div>
@@ -63,13 +80,13 @@ export function ProjectDetailModal({ project, onClose }: ProjectDetailModalProps
               <p>{project.architecture}</p>
             </div>
             <div className="modal-section-sub">
-              <h5>TECHNICAL CHALLENGES & OVERCOMING THEM</h5>
+              <h5>TECHNICAL CHALLENGES & RESOLUTIONS</h5>
               <p>{project.challenges}</p>
             </div>
           </div>
 
           <div className="modal-section highlight-impact">
-            <h5>MEASURABLE RESULTS & IMPACT</h5>
+            <h5>VERIFIED RESULTS & MEASURABLE IMPACT</h5>
             <p style={{ color: '#2ed573', fontWeight: 500 }}>{project.impact}</p>
           </div>
 
@@ -82,8 +99,21 @@ export function ProjectDetailModal({ project, onClose }: ProjectDetailModalProps
             </div>
           </div>
 
-          <div className="modal-actions">
-            {project.href && (
+          <div className="modal-actions" style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap', alignItems: 'center' }}>
+            {project.isPrivate ? (
+              <span
+                className="engage"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  borderColor: 'rgba(255, 255, 255, 0.2)',
+                  color: '#94a3b8',
+                  cursor: 'default',
+                  fontSize: '0.85rem',
+                }}
+              >
+                🔒 {project.repoLabel || 'Institutional Research Repository'}
+              </span>
+            ) : project.href ? (
               <a
                 href={project.href}
                 target="_blank"
@@ -93,7 +123,8 @@ export function ProjectDetailModal({ project, onClose }: ProjectDetailModalProps
               >
                 Access Source Repository ↗
               </a>
-            )}
+            ) : null}
+
             {project.paperUrl && (
               <a
                 href={project.paperUrl}
@@ -102,9 +133,10 @@ export function ProjectDetailModal({ project, onClose }: ProjectDetailModalProps
                 className="engage"
                 style={{ background: 'rgba(255, 154, 76, 0.15)', borderColor: '#ff9a4c', color: '#ff9a4c' }}
               >
-                Read Paper On IEEE Xplore ↗
+                Read Paper on IEEE Xplore ↗
               </a>
             )}
+
             <button type="button" className="action-btn" onClick={onClose}>
               Return to Time Machine [ESC]
             </button>

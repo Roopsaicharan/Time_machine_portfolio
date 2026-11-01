@@ -15,7 +15,21 @@ export function ProfessionalMode({ onSwitchTo3D, onOpenResume }: ProfessionalMod
     ? projects
     : projects.filter((p) => p.category.toUpperCase().includes(activeCategory))
 
-  const currentProject: ProjectData = projects.find((p) => p.id === activeProjectId) || projects[0]
+  // Ensure currentProject ALWAYS belongs to filteredProjects
+  const currentProject: ProjectData =
+    filteredProjects.find((p) => p.id === activeProjectId) ||
+    filteredProjects[0] ||
+    projects[0]
+
+  const handleCategorySelect = (cat: string) => {
+    setActiveCategory(cat)
+    const newFiltered = cat === 'ALL'
+      ? projects
+      : projects.filter((p) => p.category.toUpperCase().includes(cat))
+    if (newFiltered.length > 0 && !newFiltered.some((p) => p.id === activeProjectId)) {
+      setActiveProjectId(newFiltered[0].id)
+    }
+  }
 
   return (
     <div className="professional-mode-container">
@@ -33,11 +47,16 @@ export function ProfessionalMode({ onSwitchTo3D, onOpenResume }: ProfessionalMod
           <a href="#experience">Experience</a>
           <a href="#publications">Research</a>
           <a href="#contact">Contact</a>
-          <button type="button" className="prof-resume-btn" onClick={onOpenResume}>
-            📄 Verified Resume
-          </button>
+          <a
+            href={traveler.resumePdfUrl}
+            download="Roop_Sai_Charan_Kothamasu_Resume.pdf"
+            className="prof-resume-btn"
+            style={{ textDecoration: 'none' }}
+          >
+            ⬇ Download Resume
+          </a>
           <button type="button" className="prof-switch-btn" onClick={onSwitchTo3D}>
-            🚀 3D Doraemon Time Machine
+            🚀 3D Time Machine
           </button>
         </nav>
       </header>
@@ -62,8 +81,16 @@ export function ProfessionalMode({ onSwitchTo3D, onOpenResume }: ProfessionalMod
           </div>
 
           <div className="prof-hero-actions">
-            <button type="button" className="engage" onClick={onOpenResume}>
-              Download Verified Resume 📄
+            <a
+              href={traveler.resumePdfUrl}
+              download="Roop_Sai_Charan_Kothamasu_Resume.pdf"
+              className="engage"
+              style={{ textDecoration: 'none' }}
+            >
+              Download Resume (PDF) ⬇
+            </a>
+            <button type="button" className="action-btn" onClick={onOpenResume}>
+              Interactive Resume Preview 👁️
             </button>
             <a href={`mailto:${links.email}`} className="action-btn">
               Direct Contact ✉️
@@ -115,12 +142,12 @@ export function ProfessionalMode({ onSwitchTo3D, onOpenResume }: ProfessionalMod
 
         {/* Category Filters */}
         <div className="prof-category-filters" style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
-          {['ALL', 'AI & SYSTEMS', 'RESEARCH & DATA', 'FULL-STACK'].map((cat) => (
+          {['ALL', 'AI & SYSTEMS', 'RESEARCH & DATA', 'FULL-STACK & WEB3'].map((cat) => (
             <button
               key={cat}
               type="button"
               className={`filter-btn ${activeCategory === cat ? 'active' : ''}`}
-              onClick={() => setActiveCategory(cat)}
+              onClick={() => handleCategorySelect(cat)}
               style={{
                 padding: '0.4rem 0.9rem',
                 borderRadius: '6px',
@@ -143,7 +170,7 @@ export function ProfessionalMode({ onSwitchTo3D, onOpenResume }: ProfessionalMod
             <button
               key={proj.id}
               type="button"
-              className={`prof-tab-btn ${activeProjectId === proj.id ? 'active' : ''}`}
+              className={`prof-tab-btn ${currentProject.id === proj.id ? 'active' : ''}`}
               onClick={() => setActiveProjectId(proj.id)}
             >
               <span>{proj.codename}</span>
@@ -161,12 +188,25 @@ export function ProfessionalMode({ onSwitchTo3D, onOpenResume }: ProfessionalMod
               </span>
               <h3>{currentProject.title}</h3>
             </div>
-            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-              {currentProject.href && (
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
+              {currentProject.isPrivate ? (
+                <span
+                  className="engage"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    borderColor: 'rgba(255, 255, 255, 0.2)',
+                    color: '#94a3b8',
+                    cursor: 'default',
+                    fontSize: '0.82rem',
+                  }}
+                >
+                  🔒 {currentProject.repoLabel || 'Institutional Project'}
+                </span>
+              ) : currentProject.href ? (
                 <a href={currentProject.href} target="_blank" rel="noreferrer" className="engage">
-                  GitHub Repository ↗
+                  Verified Repository ↗
                 </a>
-              )}
+              ) : null}
               {currentProject.paperUrl && (
                 <a
                   href={currentProject.paperUrl}
@@ -256,8 +296,8 @@ export function ProfessionalMode({ onSwitchTo3D, onOpenResume }: ProfessionalMod
       {/* Peer-Reviewed IEEE Publications */}
       <section id="publications" className="prof-section">
         <div className="section-title-wrap">
-          <p className="eyebrow">SCHOLARSHIP & INTELLECTUAL PROPERTY</p>
-          <h2>Peer-Reviewed IEEE Publications & Patents</h2>
+          <p className="eyebrow">SCHOLARSHIP & PUBLICATIONS</p>
+          <h2>Peer-Reviewed IEEE Conference Publications</h2>
         </div>
 
         <div className="prof-publications-grid">
@@ -265,7 +305,7 @@ export function ProfessionalMode({ onSwitchTo3D, onOpenResume }: ProfessionalMod
             <div key={pub.id} className="prof-card">
               <span className="eyebrow">{pub.conference}</span>
               <h4>{pub.title}</h4>
-              <p className="year-line">Reference: <a href={pub.url} target="_blank" rel="noreferrer">{pub.doi}</a></p>
+              <p className="year-line">DOI: <a href={pub.url} target="_blank" rel="noreferrer">{pub.doi}</a></p>
               <p>{pub.summary}</p>
               {pub.url.startsWith('http') && (
                 <a href={pub.url} target="_blank" rel="noreferrer" className="engage" style={{ display: 'inline-block', marginTop: '0.6rem' }}>
@@ -296,9 +336,14 @@ export function ProfessionalMode({ onSwitchTo3D, onOpenResume }: ProfessionalMod
           <a href={links.linkedin} target="_blank" rel="noreferrer" className="engage">
             LinkedIn Profile
           </a>
-          <button type="button" className="engage" onClick={onOpenResume}>
-            Download Full Resume 📄
-          </button>
+          <a
+            href={traveler.resumePdfUrl}
+            download="Roop_Sai_Charan_Kothamasu_Resume.pdf"
+            className="engage"
+            style={{ textDecoration: 'none' }}
+          >
+            Download Full Resume (PDF) 📄
+          </a>
         </div>
       </section>
     </div>
